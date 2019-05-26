@@ -21,12 +21,15 @@
                                     v-model="normal_use"
                                     :label="`通常使用時効果`"
                             ></v-checkbox>
-                            <v-layout v-if="normal_use" align-center justify-center row wrap>
+                            <v-layout v-if="normal_use" align-center justify-start row wrap>
                                 <v-flex xs12 sm6 md3>
-                                    <v-text-field
-                                            label="Box"
-                                            box
-                                    ></v-text-field>
+                                    <div class="title">- 共通 -</div>
+                                    <v-layout aligh-center>
+                                        <v-checkbox></v-checkbox>
+                                        <v-text-field value="John Doe" label="Regular"></v-text-field>
+                                    </v-layout>
+                                    <div class="title">- フィールド使用 -</div>
+                                    <div class="title">- 戦闘中使用 -</div>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -112,11 +115,7 @@
                         </v-container>
                     </v-card>
                 </v-flex>
-                <v-flex xs5>
-                    <div>
-                        <v-btn color="success">Generate</v-btn>
-                        <v-btn color="info">Import</v-btn>
-                    </div>
+                <v-flex xs5 align-self-end >
                 </v-flex>
             </v-layout>
         </v-container>
@@ -128,9 +127,18 @@
                         label="json"
                         auto-grow
                         value=""
+                        v-model="json"
                 ></v-textarea>
             </v-flex>
         </v-layout>
+        <v-container>
+            <v-layout align-start justify-space-around row wrap fill-height>
+                    <div>
+                        <v-btn outline color="success" v-on:click="GenerateJson">Generate</v-btn>
+                        <v-btn outline color="info" v-on:click="LoadJson">Load</v-btn>
+                    </div>
+            </v-layout>
+        </v-container>
     </div>
     <script src="script.js"></script>
 </body>
