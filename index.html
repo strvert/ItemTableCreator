@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns="">
 <head>
     <meta charset="UTF-8">
     <title>ItemEffectCreator</title>
@@ -12,22 +12,15 @@
 </head>
 <body>
 <v-app id="app">
-    <div></div>
     <v-container>
         <v-layout justify-space-around wrap>
-            <v-flex xs10 sm5 md5>
+            <v-flex xs11 sm5 md5>
                 <v-card>
                     <v-container>
                         <v-checkbox v-model="normal_use" label="通常使用時効果"></v-checkbox>
                         <v-layout v-show="normal_use" justify-space-around column wrap>
-                            <v-layout align-start justify-start column>
-                                <v-flex>
-                                    <div class="font-weight-bold subheading">共通</div>
-                                </v-flex>
-                                <v-flex>
-                                    <div>現在値効果</div>
-                                </v-flex>
-                            </v-layout>
+                            <div class="font-weight-bold subheading">共通</div>
+                            <div>現在値効果</div>
                             <v-layout align-center justify-space-between wrap>
                                 <v-flex xs12 sm12 md5>
                                     <v-layout>
@@ -46,326 +39,316 @@
                                     </v-layout>
                                 </v-flex>
                             </v-layout>
+                            <div class="font-weight-bold subheading">フィールド</div>
+                            <div>永続パラメータ効果</div>
+                            <v-layout wrap>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_hp_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_hp_enabled" value="0" label="HP"
+                                                  type="number"
+                                                  v-model.number="normal_infield_hp"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_atp_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_atp_enabled" value="0" label="ATP"
+                                                  type="number"
+                                                  v-model.number="normal_infield_atp"></v-text-field>
+                                </v-layout>
+                                <v-layout align-center>
+                                    <v-checkbox v-model="normal_infield_dangerlevel_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_dangerlevel_enabled" value="0"
+                                                  label="危険度" type="number"
+                                                  v-model.number="normal_infield_dangerlevel"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_accuracy_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_accuracy_enabled" value="0"
+                                                  label="命中力"
+                                                  type="number"
+                                                  v-model.number="normal_infield_accuracy"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_avoidance_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_avoidance_enabled" value="0"
+                                                  label="回避力" type="number"
+                                                  v-model.number="normal_infield_avoidance"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_attack_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_attack_enabled" value="0"
+                                                  label="攻撃力"
+                                                  type="number"
+                                                  v-model.number="normal_infield_attack"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_agility_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_agility_enabled" value="0"
+                                                  label="敏捷性"
+                                                  type="number"
+                                                  v-model.number="normal_infield_agility"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_magicdefence_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_magicdefence_enabled" value="0"
+                                                  label="耐魔力" type="number"
+                                                  v-model.number="normal_infield_magicdefence"></v-text-field>
+                                </v-layout>
+                                <v-layout>
+                                    <v-checkbox v-model="normal_infield_physicaldefence_enabled"></v-checkbox>
+                                    <v-text-field :disabled="!normal_infield_physicaldefence_enabled" value="0"
+                                                  label="防御力" type="number"
+                                                  v-model.number="normal_infield_physicaldefence"></v-text-field>
+                                </v-layout>
+                            </v-layout>
+                            <v-flex xs12>
+                                <v-layout>
+                                    <v-combobox :disabled="!usingInfieldParameters"
+                                                :items="infield_targets"
+                                                v-model="normal_infield_target"
+                                                label="適用範囲">
+                                    </v-combobox>
+                                </v-layout>
+                            </v-flex>
+                            <div>カスタムイベント</div>
+                            <v-layout>
+                                <v-layout>
+                                    <v-layout align-content-space-between justify-space-between wrap>
+                                        <v-checkbox v-model="normal_infield_customevent_enabled"></v-checkbox>
+                                        <v-text-field :disabled="!normal_infield_customevent_enabled"
+                                                      label="イベントID"
+                                                      type="number"
+                                                      v-model.number="normal_infield_customevent_id"></v-text-field>
+                                    </v-layout>
+                                </v-layout>
+                            </v-layout>
                             <v-layout align-start justify-start column>
                                 <v-flex>
-                                    <div class="font-weight-bold subheading">フィールド</div>
+                                    <div class="font-weight-bold subheading">戦闘中</div>
                                 </v-flex>
                                 <v-flex>
-                                    <div>永続パラメータ効果</div>
+                                    <div>一時パラメータ効果</div>
                                 </v-flex>
                             </v-layout>
                             <v-layout>
-                                <v-flex align-content-space-between justify-space-between wrap>
-                                    <v-layout wrap>
+                                <v-layout>
+                                    <v-layout align-content-space-between justify-space-between wrap>
                                         <v-layout>
-                                            <v-checkbox v-model="normal_infield_hp_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_hp_enabled" value="0" label="HP"
-                                                          type="number"
-                                                          v-model.number="normal_infield_hp"></v-text-field>
+                                            <v-checkbox v-model="normal_inbattle_hp_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_hp_enabled" value="0"
+                                                          label="HP" type="number"
+                                                          v-model.number="normal_inbattle_hp"></v-text-field>
                                         </v-layout>
                                         <v-layout>
-                                            <v-checkbox v-model="normal_infield_atp_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_atp_enabled" value="0" label="ATP"
-                                                          type="number"
-                                                          v-model.number="normal_infield_atp"></v-text-field>
+                                            <v-checkbox v-model="normal_inbattle_atp_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_atp_enabled" value="0"
+                                                          label="ATP" type="number"
+                                                          v-model.number="normal_inbattle_atp"></v-text-field>
                                         </v-layout>
                                         <v-layout align-center>
-                                            <v-checkbox v-model="normal_infield_dangerlevel_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_dangerlevel_enabled" value="0"
+                                            <v-checkbox
+                                                    v-model="normal_inbattle_dangerlevel_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_dangerlevel_enabled"
+                                                          value="0"
                                                           label="危険度" type="number"
-                                                          v-model.number="normal_infield_dangerlevel"></v-text-field>
+                                                          v-model.number="normal_inbattle_dangerlevel"></v-text-field>
                                         </v-layout>
                                         <v-layout>
-                                            <v-checkbox v-model="normal_infield_accuracy_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_accuracy_enabled" value="0"
-                                                          label="命中力"
-                                                          type="number"
-                                                          v-model.number="normal_infield_accuracy"></v-text-field>
+                                            <v-checkbox v-model="normal_inbattle_accuracy_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_accuracy_enabled"
+                                                          value="0"
+                                                          label="命中力" type="number"
+                                                          v-model.number="normal_inbattle_accuracy"></v-text-field>
                                         </v-layout>
                                         <v-layout>
-                                            <v-checkbox v-model="normal_infield_avoidance_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_avoidance_enabled" value="0"
+                                            <v-checkbox
+                                                    v-model="normal_inbattle_avoidance_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_avoidance_enabled"
+                                                          value="0"
                                                           label="回避力" type="number"
-                                                          v-model.number="normal_infield_avoidance"></v-text-field>
+                                                          v-model.number="normal_inbattle_avoidance"></v-text-field>
                                         </v-layout>
                                         <v-layout>
-                                            <v-checkbox v-model="normal_infield_attack_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_attack_enabled" value="0"
-                                                          label="攻撃力"
+                                            <v-checkbox v-model="normal_inbattle_attack_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_attack_enabled" value="0"
+                                                          label="攻撃力" type="number"
+                                                          v-model.number="normal_inbattle_attack"></v-text-field>
+                                        </v-layout>
+                                        <v-layout>
+                                            <v-checkbox v-model="normal_inbattle_agility_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_agility_enabled" value="0"
+                                                          label="敏捷性" type="number"
+                                                          v-model.number="normal_inbattle_agility"></v-text-field>
+                                        </v-layout>
+                                        <v-layout>
+                                            <v-checkbox
+                                                    v-model="normal_inbattle_magicdefence_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_magicdefence_enabled"
+                                                          value="0" label="耐魔力" type="number"
+                                                          v-model.number="normal_inbattle_magicdefence"></v-text-field>
+                                        </v-layout>
+                                        <v-layout>
+                                            <v-checkbox
+                                                    v-model="normal_inbattle_physicaldefence_enabled"></v-checkbox>
+                                            <v-text-field :disabled="!normal_inbattle_physicaldefence_enabled"
+                                                          value="0" label="防御力"
                                                           type="number"
-                                                          v-model.number="normal_infield_attack"></v-text-field>
+                                                          v-model.number="normal_inbattle_physicaldefence"></v-text-field>
                                         </v-layout>
-                                        <v-layout>
-                                            <v-checkbox v-model="normal_infield_agility_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_agility_enabled" value="0"
-                                                          label="敏捷性"
-                                                          type="number"
-                                                          v-model.number="normal_infield_agility"></v-text-field>
-                                        </v-layout>
-                                        <v-layout>
-                                            <v-checkbox v-model="normal_infield_magicdefence_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_magicdefence_enabled" value="0"
-                                                          label="耐魔力" type="number"
-                                                          v-model.number="normal_infield_magicdefence"></v-text-field>
-                                        </v-layout>
-                                        <v-layout>
-                                            <v-checkbox v-model="normal_infield_physicaldefence_enabled"></v-checkbox>
-                                            <v-text-field :disabled="!normal_infield_physicaldefence_enabled" value="0"
-                                                          label="防御力" type="number"
-                                                          v-model.number="normal_infield_physicaldefence"></v-text-field>
-                                        </v-layout>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-combobox :disabled="!usingInbattleParameters"
+                                                            :items="inbattle_targets"
+                                                            v-model="normal_inbattle_target"
+                                                            label="適用範囲">
+                                                </v-combobox>
+                                            </v-layout>
+                                        </v-flex>
                                     </v-layout>
-                                    <v-flex xs12>
-                                        <v-layout>
-                                            <v-combobox :disabled="!usingInfieldParameters"
-                                                        :items="infield_targets"
-                                                        v-model="normal_infield_target"
+                                </v-layout>
+                            </v-layout>
+                            <div>状態異常効果</div>
+                            <v-layout>
+                                <v-layout>
+                                    <v-layout align-content-space-between justify-space-between wrap>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_poison_enabled"
+                                                            label="毒　"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_poison_enabled"
+                                                            v-model="normal_inbattle_poison_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_poison_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_poison_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_sleep_enabled"
+                                                            label="睡眠"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_sleep_enabled"
+                                                            v-model="normal_inbattle_sleep_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_sleep_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_sleep_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_frostbite_enabled"
+                                                            label="凍傷"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_frostbite_enabled"
+                                                            v-model="normal_inbattle_frostbite_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_frostbite_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_frostbite_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_paralysis_enabled"
+                                                            label="麻痺"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_paralysis_enabled"
+                                                            v-model="normal_inbattle_paralysis_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_paralysis_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_paralysis_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_bleeding_enabled"
+                                                            label="出血"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_bleeding_enabled"
+                                                            v-model="normal_inbattle_bleeding_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_bleeding_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_bleeding_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_confusion_enabled"
+                                                            label="錯乱"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_confusion_enabled"
+                                                            v-model="normal_inbattle_confusion_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_confusion_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_confusion_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_blindness_enabled"
+                                                            label="盲目"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_blindness_enabled"
+                                                            v-model="normal_inbattle_blindness_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_blindness_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_blindness_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-layout>
+                                                <v-checkbox v-model="normal_inbattle_weakness_enabled"
+                                                            label="脱力"></v-checkbox>
+                                                <v-combobox :disabled="!normal_inbattle_weakness_enabled"
+                                                            v-model="normal_inbattle_weakness_action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                <v-text-field :disabled="!normal_inbattle_weakness_enabled"
+                                                              label="確率"
+                                                              type="number"
+                                                              v-model.number="normal_inbattle_weakness_probability"></v-text-field>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-combobox :disabled="!usingInbattleAilments"
+                                                        :items="inbattle_targets"
+                                                        v-model="normal_inbattle_ailment_target"
                                                         label="適用範囲">
                                             </v-combobox>
-                                        </v-layout>
-                                    </v-flex>
-                                    <div>カスタムイベント</div>
-                                    <v-layout>
-                                        <v-layout>
-                                            <v-layout align-content-space-between justify-space-between wrap>
-                                                <v-checkbox v-model="normal_infield_customevent_enabled"></v-checkbox>
-                                                <v-text-field :disabled="!normal_infield_customevent_enabled"
-                                                              label="イベントID"
-                                                              type="number"
-                                                              v-model.number="normal_infield_customevent_id"></v-text-field>
-                                            </v-layout>
-                                        </v-layout>
-                                    </v-layout>
-                                    <v-layout align-start justify-start column>
-                                        <v-flex>
-                                            <div class="font-weight-bold subheading">戦闘中</div>
-                                        </v-flex>
-                                        <v-flex>
-                                            <div>一時パラメータ効果</div>
                                         </v-flex>
                                     </v-layout>
-                                    <v-layout>
-                                        <v-layout>
-                                            <v-layout align-content-space-between justify-space-between wrap>
-                                                <v-layout>
-                                                    <v-checkbox v-model="normal_inbattle_hp_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_hp_enabled" value="0"
-                                                                  label="HP" type="number"
-                                                                  v-model.number="normal_inbattle_hp"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox v-model="normal_inbattle_atp_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_atp_enabled" value="0"
-                                                                  label="ATP" type="number"
-                                                                  v-model.number="normal_inbattle_atp"></v-text-field>
-                                                </v-layout>
-                                                <v-layout align-center>
-                                                    <v-checkbox
-                                                            v-model="normal_inbattle_dangerlevel_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_dangerlevel_enabled"
-                                                                  value="0"
-                                                                  label="危険度" type="number"
-                                                                  v-model.number="normal_inbattle_dangerlevel"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox v-model="normal_inbattle_accuracy_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_accuracy_enabled"
-                                                                  value="0"
-                                                                  label="命中力" type="number"
-                                                                  v-model.number="normal_inbattle_accuracy"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox
-                                                            v-model="normal_inbattle_avoidance_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_avoidance_enabled"
-                                                                  value="0"
-                                                                  label="回避力" type="number"
-                                                                  v-model.number="normal_inbattle_avoidance"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox v-model="normal_inbattle_attack_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_attack_enabled" value="0"
-                                                                  label="攻撃力" type="number"
-                                                                  v-model.number="normal_inbattle_attack"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox v-model="normal_inbattle_agility_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_agility_enabled" value="0"
-                                                                  label="敏捷性" type="number"
-                                                                  v-model.number="normal_inbattle_agility"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox
-                                                            v-model="normal_inbattle_magicdefence_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_magicdefence_enabled"
-                                                                  value="0" label="耐魔力" type="number"
-                                                                  v-model.number="normal_inbattle_magicdefence"></v-text-field>
-                                                </v-layout>
-                                                <v-layout>
-                                                    <v-checkbox
-                                                            v-model="normal_inbattle_physicaldefence_enabled"></v-checkbox>
-                                                    <v-text-field :disabled="!normal_inbattle_physicaldefence_enabled"
-                                                                  value="0" label="防御力"
-                                                                  type="number"
-                                                                  v-model.number="normal_inbattle_physicaldefence"></v-text-field>
-                                                </v-layout>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-combobox :disabled="!usingInbattleParameters"
-                                                                    :items="inbattle_targets"
-                                                                    v-model="normal_inbattle_target"
-                                                                    label="適用範囲">
-                                                        </v-combobox>
-                                                    </v-layout>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-layout>
+                                </v-layout>
+                            </v-layout>
+                            <div>カスタムイベント</div>
+                            <v-layout>
+                                <v-layout>
+                                    <v-layout align-content-space-between justify-space-between wrap>
+                                        <v-checkbox v-model="normal_inbattle_customevent_enabled"></v-checkbox>
+                                        <v-text-field :disabled="!normal_inbattle_customevent_enabled"
+                                                      label="イベントID"
+                                                      type="number"
+                                                      v-model.number="normal_inbattle_customevent_id"></v-text-field>
                                     </v-layout>
-                                    <div>状態異常効果</div>
-                                    <v-layout>
-                                        <v-layout>
-                                            <v-layout align-content-space-between justify-space-between wrap>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_poison_enabled"
-                                                                    label="毒　"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_poison_enabled"
-                                                                    v-model="normal_inbattle_poison_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_poison_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_poison_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_sleep_enabled"
-                                                                    label="睡眠"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_sleep_enabled"
-                                                                    v-model="normal_inbattle_sleep_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_sleep_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_sleep_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_frostbite_enabled"
-                                                                    label="凍傷"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_frostbite_enabled"
-                                                                    v-model="normal_inbattle_frostbite_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_frostbite_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_frostbite_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_paralysis_enabled"
-                                                                    label="麻痺"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_paralysis_enabled"
-                                                                    v-model="normal_inbattle_paralysis_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_paralysis_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_paralysis_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_bleeding_enabled"
-                                                                    label="出血"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_bleeding_enabled"
-                                                                    v-model="normal_inbattle_bleeding_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_bleeding_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_bleeding_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_confusion_enabled"
-                                                                    label="錯乱"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_confusion_enabled"
-                                                                    v-model="normal_inbattle_confusion_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_confusion_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_confusion_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_blindness_enabled"
-                                                                    label="盲目"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_blindness_enabled"
-                                                                    v-model="normal_inbattle_blindness_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_blindness_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_blindness_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-layout>
-                                                        <v-checkbox v-model="normal_inbattle_weakness_enabled"
-                                                                    label="脱力"></v-checkbox>
-                                                        <v-combobox :disabled="!normal_inbattle_weakness_enabled"
-                                                                    v-model="normal_inbattle_weakness_action"
-                                                                    :items="inbattle_ailment_types"
-                                                                    label="効果"></v-combobox>
-                                                        <v-text-field :disabled="!normal_inbattle_weakness_enabled"
-                                                                      label="確率"
-                                                                      type="number"
-                                                                      v-model.number="normal_inbattle_weakness_probability"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                                <v-flex xs12 sm12 md12>
-                                                    <v-combobox :disabled="!usingInbattleAilments"
-                                                                :items="inbattle_targets"
-                                                                v-model="normal_inbattle_ailment_target"
-                                                                label="適用範囲">
-                                                    </v-combobox>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-layout>
-                                    </v-layout>
-                                    <div>カスタムイベント</div>
-                                    <v-layout>
-                                        <v-layout>
-                                            <v-layout align-content-space-between justify-space-between wrap>
-                                                <v-checkbox v-model="normal_inbattle_customevent_enabled"></v-checkbox>
-                                                <v-text-field :disabled="!normal_inbattle_customevent_enabled"
-                                                              label="イベントID"
-                                                              type="number"
-                                                              v-model.number="normal_inbattle_customevent_id"></v-text-field>
-                                            </v-layout>
-                                        </v-layout>
-                                    </v-layout>
-                                </v-flex>
+                                </v-layout>
                             </v-layout>
                         </v-layout>
                     </v-container>
                 </v-card>
             </v-flex>
-            <v-flex xs10 sm5 md5>
+            <v-flex xs11 sm5 md5>
                 <v-card>
                     <v-container>
                         <v-checkbox v-model="walk_field" label="フィールド移動時効果"></v-checkbox>
@@ -398,7 +381,7 @@
     </v-container>
     <v-container>
         <v-layout justify-space-around wrap>
-            <v-flex xs10 sm5 md5>
+            <v-flex xs11 sm5 md5>
                 <v-card>
                     <v-container>
                         <v-checkbox
@@ -416,7 +399,7 @@
                     </v-container>
                 </v-card>
             </v-flex>
-            <v-flex xs10 sm5 md5>
+            <v-flex xs11 sm5 md5>
                 <v-card>
                     <v-container>
                         <v-checkbox
@@ -438,7 +421,7 @@
     </v-container>
     <v-container>
         <v-layout justify-space-around wrap>
-            <v-flex xs10 sm5 md5>
+            <v-flex xs11 sm5 md5>
                 <v-card>
                     <v-container>
                         <v-checkbox
@@ -456,7 +439,7 @@
                     </v-container>
                 </v-card>
             </v-flex>
-            <v-flex xs10 sm5 md5>
+            <v-flex xs11 sm5 md5>
             </v-flex>
         </v-layout>
     </v-container>
@@ -481,7 +464,6 @@
         </v-layout>
     </v-container>
 </v-app>
-</div>
 <script src="script.js"></script>
 </body>
 </html>
