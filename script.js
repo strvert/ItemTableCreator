@@ -87,6 +87,8 @@ new Vue({
         normal_inbattle_weakness_action: "Give",
         normal_inbattle_weakness_probability: 100,
         normal_inbattle_weakness_enabled: false,
+        normal_inbattle_ailment_target: "Person",
+        normal_inbattle_ailment_target_enabled: false,
 
         normal_inbattle_customevent_id: 0,
         normal_inbattle_customevent_enabled: false,
@@ -102,6 +104,23 @@ new Vue({
         },
         LoadJson: function () {
             console.log(JSON.parse(this.json));
+        }
+    },
+    computed: {
+        usingInfieldParameters: function () {
+            return this.normal_infield_hp_enabled || this.normal_infield_atp_enabled || this.normal_infield_dangerlevel_enabled ||
+                this.normal_infield_accuracy_enabled || this.normal_infield_avoidance_enabled || this.normal_infield_attack_enabled ||
+                this.normal_infield_agility_enabled || this.normal_infield_magicdefence_enabled || this.normal_infield_physicaldefence_enabled;
+        },
+        usingInbattleParameters: function () {
+            return this.normal_inbattle_hp_enabled || this.normal_inbattle_atp_enabled || this.normal_inbattle_dangerlevel_enabled ||
+                this.normal_inbattle_accuracy_enabled || this.normal_inbattle_avoidance_enabled || this.normal_inbattle_attack_enabled ||
+                this.normal_inbattle_agility_enabled || this.normal_inbattle_magicdefence_enabled || this.normal_inbattle_physicaldefence_enabled;
+        },
+        usingInbattleAilments: function () {
+            return this.normal_inbattle_poison_enabled || this.normal_inbattle_sleep_enabled || this.normal_inbattle_frostbite_enabled ||
+                this.normal_inbattle_paralysis_enabled || this.normal_inbattle_bleeding_enabled || this.normal_inbattle_confusion_enabled ||
+                this.normal_inbattle_blindness_enabled || this.normal_inbattle_weakness_enabled;
         }
     }
 });
