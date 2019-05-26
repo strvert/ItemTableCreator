@@ -121,6 +121,9 @@ new Vue({
             return this.normal_inbattle_poison_enabled || this.normal_inbattle_sleep_enabled || this.normal_inbattle_frostbite_enabled ||
                 this.normal_inbattle_paralysis_enabled || this.normal_inbattle_bleeding_enabled || this.normal_inbattle_confusion_enabled ||
                 this.normal_inbattle_blindness_enabled || this.normal_inbattle_weakness_enabled;
+        },
+        usingWalkFieldParameters: function () {
+            return this.walkfield_use_common_hp_enabled || this.walkfield_use_common_atp_enabled;
         }
     }
 });
