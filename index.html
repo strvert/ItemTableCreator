@@ -16,7 +16,7 @@
         <v-toolbar-title>ItemTableCreator</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn v-if="mode === 'list'" depressed color="primary">インポート</v-btn>
-        <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">新規アイテム</v-btn>
+        <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">アイテム追加</v-btn>
         <v-btn v-if="mode === 'edit'" depressed @click="toList">戻る</v-btn>
     </v-toolbar>
     <div v-show="mode === 'list'">

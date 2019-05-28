@@ -5,7 +5,7 @@ class Item {
         this.id = -1;
         this.name = "未定義";
         this.category = "UseItem";
-        this.can_use_in_field = false;
+        this.can_use_in_field = true;
         this.can_use_in_battle = false;
         this.is_equipment = false;
         this.can_buy = true;
