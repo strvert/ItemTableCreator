@@ -26,9 +26,6 @@
                     <v-list>
                         <template v-for="(item, index) in items" :key="items.item">
                             <v-layout align-center justify-space-around row wrap>
-                                <!--<v-flex xs3 md1 justify-center>
-                                    <div>　　{{ index }}</div>
-                                </v-flex>-->
                                 <v-flex xs3 sm2 md1>
                                     <v-text-field label="id" v-model="item.id" type="number"
                                                   readonly></v-text-field>
@@ -54,12 +51,12 @@
                                 </v-flex>
                                 <v-flex xs3 sm2 md1>
                                     <v-text-field label="買い相場" v-model="item.buying_price" type="number"
-                                                  readonly></v-text-field>
+                                                  ></v-text-field>
                                 </v-flex>
                                 <v-flex xs3 md1>
                                     <v-text-field :disabled="! item.can_buy" label="売り相場"
                                                   v-model="item.selling_price" type="number"
-                                                  readonly></v-text-field>
+                                                  ></v-text-field>
                                 </v-flex>
                                 <v-flex xs3 md1>
                                     <v-btn depressed color="" @click="toEditItem(index)">効果編集</v-btn>
