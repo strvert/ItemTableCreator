@@ -3,7 +3,11 @@
     <words>
       <w>customevent</w>
       <w>dangerlevel</w>
+      <w>everyturn</w>
+      <w>inattack</w>
       <w>inbattle</w>
+      <w>inbeattack</w>
+      <w>keystr</w>
       <w>magicdefence</w>
       <w>physicaldefence</w>
       <w>walkfield</w>

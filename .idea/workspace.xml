@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="362799e4-c6cb-4509-8dfe-11f5722683e9" name="Default Changelist" comment="">
+    <list default="true" id="362799e4-c6cb-4509-8dfe-11f5722683e9" name="Default Changelist" comment="j">
+      <change beforePath="$PROJECT_DIR$/.idea/ItemEffectCreator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ItemEffectCreator.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/strv13570.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/strv13570.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,37 +18,27 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.516185">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="207">
-                  <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
-                  <folding>
-                    <element signature="n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#0;n#v-app#0;n#body#0;n#html#0;n#!!top" />
-                    <element signature="n#v-container#1;n#v-app#0;n#body#0;n#html#0;n#!!top" />
-                    <element signature="n#v-flex#0;n#v-layout#0;n#v-app#0;n#body#0;n#html#0;n#!!top" />
-                  </folding>
+                <state relative-caret-position="460">
+                  <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
                 </state>
               </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/style.css">
-              <provider selected="true" editor-type-id="text-editor" />
             </entry>
           </file>
         </leaf>
       </split-first>
       <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+        <leaf>
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/script.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="997">
-                  <caret line="122" column="95" selection-start-line="122" selection-start-column="95" selection-end-line="122" selection-end-column="95" />
+                <state relative-caret-position="-2035">
+                  <caret line="845" column="41" lean-forward="true" selection-start-line="845" selection-start-column="41" selection-end-line="845" selection-end-column="41" />
                 </state>
               </provider>
             </entry>
@@ -69,6 +61,12 @@
       <find>lllllllllllll</find>
       <find>sleep</find>
       <find>v-model.number</find>
+      <find>inattack</find>
+      <find>inbeattack</find>
+      <find>:</find>
+      <find>: function</find>
+      <find>everyturn</find>
+      <find>in_attack</find>
       <find>normal</find>
     </findStrings>
     <replaceStrings>
@@ -84,6 +82,16 @@
       <replace>type=&quot;number&quot; v-model.number</replace>
       <replace>walkfield</replace>
       <replace>inbattle</replace>
+      <replace>Inattack</replace>
+      <replace>wal</replace>
+      <replace>;</replace>
+      <replace>=</replace>
+      <replace>everytrurn</replace>
+      <replace>everyturn</replace>
+      <replace>in_attack</replace>
+      <replace>inattack</replace>
+      <replace>inbeattack</replace>
+      <replace>equipment</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -99,10 +107,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-957" />
-    <option name="y" value="-15" />
-    <option name="width" value="1937" />
-    <option name="height" value="1056" />
+    <option name="x" value="-11" />
+    <option name="y" value="-11" />
+    <option name="width" value="2898" />
+    <option name="height" value="1761" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -173,11 +181,12 @@
       <workItem from="1558855598848" duration="4623000" />
       <workItem from="1558861046514" duration="7285000" />
       <workItem from="1558871594951" duration="6996000" />
+      <workItem from="1558895877056" duration="65700000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30788000" />
+    <option name="totallyTimeSpent" value="104998000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2575" height="1415" extended-state="6" />
@@ -212,22 +221,25 @@
     <entry file="file://$PROJECT_DIR$/style.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="997">
-          <caret line="122" column="95" selection-start-line="122" selection-start-column="95" selection-end-line="122" selection-end-column="95" />
+        <state relative-caret-position="-2035">
+          <caret line="845" column="41" lean-forward="true" selection-start-line="845" selection-start-column="41" selection-end-line="845" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
-          <folding>
-            <element signature="n#v-layout#0;n#v-container#0;n#v-card#0;n#v-flex#0;n#v-layout#0;n#v-container#0;n#v-app#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#v-container#1;n#v-app#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#v-flex#0;n#v-layout#0;n#v-app#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
+        <state relative-caret-position="460">
+          <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
         </state>
       </provider>
     </entry>
