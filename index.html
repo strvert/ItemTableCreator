@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns="http://www.w3.org/1999/html">
+<html lang="ja" xmlns="http://www.w3.org/1999/html" xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
 <head>
     <meta charset="UTF-8">
     <title>ItemTableCreator</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -14,8 +15,27 @@
 <v-app id="app">
     <v-toolbar color="black" dark>
         <v-toolbar-title>ItemTableCreator</v-toolbar-title>
+        <v-dialog v-if="mode == 'list'" v-model="export_dialog" width="500">
+            <template v-slot:activator="{ on }">
+                <v-btn color="red lighten-2" dark @click="generateCSV()" v-on="on">エクスポート</v-btn>
+            </template>
+
+            <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>エクスポート</v-card-title>
+                <v-container>
+                    <v-textarea v-model="csv_data"></v-textarea>
+                </v-container>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat @click="export_dialog = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-btn disabled="true" v-if="mode === 'list'" depressed color="primary">インポート</v-btn>
         <v-spacer></v-spacer>
-        <v-btn v-if="mode === 'list'" depressed color="primary">インポート</v-btn>
         <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">アイテム追加</v-btn>
         <v-btn v-if="mode === 'edit'" depressed @click="toList">戻る</v-btn>
     </v-toolbar>
@@ -25,44 +45,55 @@
                 <v-card>
                     <v-list>
                         <template v-for="(item, index) in items" :key="items.item">
-                            <v-layout align-center justify-space-around row wrap>
-                                <v-flex xs3 sm2 md1>
-                                    <v-text-field label="id" v-model="item.id" type="number"
-                                                  readonly></v-text-field>
-                                </v-flex>
-                                <v-flex xs4 sm2 md2>
-                                    <v-text-field label="アイテム名" v-model="item.name"></v-text-field>
-                                </v-flex>
-                                <v-flex xs4 sm2 md1>
-                                    <v-combobox :items="item_categories" label="カテゴリ"
-                                                v-model="item.category"></v-combobox>
-                                </v-flex>
-                                <v-flex xs4 sm2 md1>
-                                    <v-checkbox label="フィールドで使用可能" v-model="item.can_use_in_field"></v-checkbox>
-                                </v-flex>
-                                <v-flex xs3 sm2 md1>
-                                    <v-checkbox label="戦闘中に使用可能" v-model="item.can_use_in_battle"></v-checkbox>
-                                </v-flex>
-                                <v-flex xs3 sm2 md1>
-                                    <v-checkbox label="装備品" v-model="item.is_equipment"></v-checkbox>
-                                </v-flex>
-                                <v-flex xs3 sm2 md1>
-                                    <v-checkbox label="売却可能" v-model="item.can_buy"></v-checkbox>
-                                </v-flex>
-                                <v-flex xs3 sm2 md1>
-                                    <v-text-field label="買い相場" v-model="item.buying_price" type="number"
-                                                  ></v-text-field>
-                                </v-flex>
-                                <v-flex xs3 md1>
-                                    <v-text-field :disabled="! item.can_buy" label="売り相場"
-                                                  v-model="item.selling_price" type="number"
-                                                  ></v-text-field>
-                                </v-flex>
-                                <v-flex xs3 md1>
-                                    <v-btn depressed color="" @click="toEditItem(index)">効果編集</v-btn>
-                                    <v-btn depressed color="error" @click="removeItem(index)">削除</v-btn>
-                                </v-flex>
-                            </v-layout>
+                            <v-container>
+                                <v-layout align-center justify-space-around row wrap>
+                                    <v-flex xs3 sm2 md1>
+                                        <v-text-field label="id" v-model="item.id" type="number"
+                                                      readonly></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs4 sm2 md2>
+                                        <v-text-field label="アイテム名" v-model="item.name"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs4 sm2 md2>
+                                        <v-combobox :items="item_categories" label="カテゴリ"
+                                                    v-model="item.category"></v-combobox>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md2>
+                                        <v-combobox :items="item_attribute" label="属性"
+                                                    v-model="item.attribute"></v-combobox>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md2>
+                                        <v-checkbox label="フィールドで使用可能" v-model="item.can_use_in_field"></v-checkbox>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md2>
+                                        <v-checkbox label="戦闘中に使用可能" v-model="item.can_use_in_battle"></v-checkbox>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md6>
+                                        <v-text-field label="説明"
+                                                      v-model="item.description"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md1>
+                                        <v-checkbox label="装備品" v-model="item.is_equipment"></v-checkbox>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md1>
+                                        <v-checkbox label="売却可能" v-model="item.can_selling"></v-checkbox>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md1>
+                                        <v-text-field label="買い相場" v-model="item.buying_price" type="number"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md1>
+                                        <v-text-field :disabled="! item.can_selling" label="売り相場"
+                                                      v-model="item.selling_price" type="number"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs3 sm2 md2>
+                                        <v-btn depressed color="" @click="toEditItem(index)">効果編集</v-btn>
+                                        <v-btn depressed color="error" @click="removeItem(index)">削除</v-btn>
+                                    </v-flex>
+                                </v-layout>
+
+                            </v-container>
                             <v-divider v-if="items.length > index+1"></v-divider>
                         </template>
                     </v-list>
@@ -509,7 +540,7 @@
                                             <v-layout>
                                                 <v-combobox :disabled="!item.usingEveryturnCommonParameters()"
                                                             :items="inbattle_targets"
-                                                            v-model="item.everyturn_inbattle_target"
+                                                            v-model="item.everyturn_common_target"
                                                             label="適用範囲">
                                                 </v-combobox>
                                             </v-layout>
@@ -574,7 +605,7 @@
                                         </v-layout>
                                         <v-flex xs12 sm12 md12>
                                             <v-layout>
-                                                <v-combobox :disabled="!item.usingWalkingFieldInbattleParameters()"
+                                                <v-combobox :disabled="!item.usingEveryturnInbattleParameters()"
                                                             :items="inbattle_targets"
                                                             v-model="item.everyturn_inbattle_target"
                                                             label="適用範囲">
