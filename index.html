@@ -15,25 +15,7 @@
 <v-app id="app">
     <v-toolbar color="black" dark>
         <v-toolbar-title>ItemTableCreator</v-toolbar-title>
-        <v-dialog v-if="mode == 'list'" v-model="export_dialog" width="500">
-            <template v-slot:activator="{ on }">
-                <v-btn color="red lighten-2" dark @click="generateCSV()" v-on="on">エクスポート</v-btn>
-            </template>
-
-            <v-card>
-                <v-card-title class="headline grey lighten-2" primary-title>エクスポート</v-card-title>
-                <v-container>
-                    <v-textarea v-model="csv_data"></v-textarea>
-                </v-container>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" flat @click="export_dialog = false">Close</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <v-btn v-if="mode === 'list'" depressed color="error" @click="exportCSV">エクスポート</v-btn>
         <v-btn disabled="true" v-if="mode === 'list'" depressed color="primary">インポート</v-btn>
         <v-spacer></v-spacer>
         <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">アイテム追加</v-btn>

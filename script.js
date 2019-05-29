@@ -1016,7 +1016,16 @@ new Vue({
                 rows.push(item.GenerateRow());
             });
             console.log(JSON.stringify(rows));
-            this.csv_data = JSON.stringify(rows);
+            return JSON.stringify(rows);
+        },
+        exportCSV: function () {
+            let csv = this.generateCSV();
+            let blob = new Blob([csv], {type: "text/plain"});
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.target = "_blank";
+            a.download = "ItemTable.json";
+            a.click();
         },
         copyCSV() {
 
