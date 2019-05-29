@@ -16,7 +16,8 @@
     <v-toolbar color="black" dark>
         <v-toolbar-title>ItemTableCreator</v-toolbar-title>
         <v-btn v-if="mode === 'list'" depressed color="error" @click="exportCSV">エクスポート</v-btn>
-        <v-btn disabled="true" v-if="mode === 'list'" depressed color="primary">インポート</v-btn>
+        <v-btn v-if="mode === 'list'" depressed color="primary" @click="clickImport">インポート</v-btn>
+        <input type="file" style="display: none" ref="import" accept=".json" @change="onChangeFile">
         <v-spacer></v-spacer>
         <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">アイテム追加</v-btn>
         <v-btn v-if="mode === 'edit'" depressed @click="toList">戻る</v-btn>

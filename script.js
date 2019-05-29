@@ -832,7 +832,82 @@ class Item {
         return JSON.stringify(e);
     }
 
-    LoadJson() {
+    LoadJson(json) {
+        let parsed = JSON.parse(json);
+        if ("NormalUse" in parsed) {
+            this.normal_use = true;
+            let normal = parsed.NormalUse;
+            if ("Common" in normal) {
+                let common = normal.Common;
+                if ("CurrentParameter" in common) {
+                    let current = common.CurrentParameter;
+                    current.forEach((data)=>{
+                        switch (data.Name) {
+                            case "HP":
+                                this.normal_use_common_hp_enabled = true;
+                                this.normal_use_common_hp = data.Value;
+                                break;
+                            case "ATP":
+                                this.normal_use_common_atp_enabled = true;
+                                this.normal_use_common_atp = data.Value;
+                                break;
+                        }
+                    });
+                }
+                if ("CurrentParameterTarget" in common) {
+                    this.normal_use_common_target = common.CurrentParameterTarget;
+                }
+            }
+            if ("InField" in normal) {
+                let infield = normal.InField;
+                if ("AbsoluteParameter" in infield) {
+                    let absparam = infield.AbsoluteParameter;
+                    absparam.forEach((data) => {
+                        switch (data.Name) {
+                            case "HP":
+                                this.normal_infield_hp_enabled = true;
+                                this.normal_infield_hp = data.Value;
+                                break;
+                            case "ATP":
+                                this.normal_infield_atp_enabled = true;
+                                this.normal_infield_atp = data.Value;
+                                break;
+                            case "Accuracy":
+                                this.normal_infield_accuracy_enabled = true;
+                                this.normal_infield_accuracy = data.Value;
+                                break;
+                            case "Avoidance":
+                                this.normal_infield_avoidance_enabled = true;
+                                this.normal_infield_avoidance = data.Value;
+                                break;
+                            case "Agility":
+                                this.normal_infield_agility_enabled = true;
+                                this.normal_infield_agility = data.Value;
+                                break;
+                            case "MagicDefence":
+                                this.normal_infield_magicdefence_enabled = true;
+                                this.normal_infield_magicdefence = data.Value;
+                                break;
+                            case "PhysicalDefence":
+                                this.normal_infield_physicaldefence_enabled = true;
+                                this.normal_infield_physicaldefence = data.Value;
+                                break;
+                        }
+                    });
+                }
+                if ("AbsoluteParameterTarget" in infield) {
+                    this.normal_infield_target = infield.AbsoluteParameterTarget;
+                }
+                if ("CustomEvent" in infield) {
+                    this.normal_infield_customevent_enabled = true;
+                    this.normal_infield_customevent_id = infield.CustomEvent
+                }
+            }
+            if ("InBattle" in normal) {
+
+            }
+        }
+        console.log(parsed);
     }
 
     GenerateRow() {
@@ -1010,7 +1085,7 @@ new Vue({
         toList: function () {
             this.mode = "list";
         },
-        generateCSV() {
+        generateCSV: function () {
             let rows = [];
             this.items.forEach((item) => {
                 rows.push(item.GenerateRow());
@@ -1027,8 +1102,41 @@ new Vue({
             a.download = "ItemTable.json";
             a.click();
         },
-        copyCSV() {
+        copyCSV: function () {
 
+        },
+        clickImport: function () {
+            this.$refs.import.click();
+        },
+        onChangeFile: function (e) {
+            let files = e.target.files;
+            if (files !== undefined) {
+                let reader = new FileReader();
+                reader.onload = () => {
+                    let result = reader.result;
+                    this.importData(JSON.parse(result));
+                };
+                reader.readAsText(files[0]);
+            }
+        },
+        importData: function (data) {
+            this.items = [];
+            data.forEach((row, index) => {
+                let item = new Item();
+                item.id = row.Name;
+                item.name = row.itemName;
+                item.category = row.category;
+                item.description = row.description;
+                item.attribute = row.attribute;
+                item.can_use_in_field = row.canUseInField;
+                item.can_use_in_battle = row.canUseInBattle;
+                item.is_equipment = row.isEquipment;
+                item.can_selling = row.canSell;
+                item.buying_price = row.buyingPrice;
+                item.selling_price = row.sellingPrice;
+                item.LoadJson(row.effects);
+                this.items.push(item);
+            });
         }
     },
     computed: {}
