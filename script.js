@@ -174,7 +174,7 @@ class Item {
             params = [];
             for (let key in this.normal_inbattle_params) {
                 if (this.normal_inbattle_params.hasOwnProperty(key)) {
-                    if (this.normal_inbattle_params[key].enabled){
+                    if (this.normal_inbattle_params[key].enabled) {
                         params.push({Name: key, Value: this.normal_inbattle_params[key]['value']})
                     }
                 }
@@ -188,7 +188,7 @@ class Item {
             params = [];
             for (let key in this.normal_ailment_params) {
                 if (this.normal_ailment_params.hasOwnProperty(key)) {
-                    if (this.normal_ailment_params[key].enabled){
+                    if (this.normal_ailment_params[key].enabled) {
                         params.push({
                             Name: key,
                             Action: this.normal_ailment_params[key].action,
@@ -215,7 +215,7 @@ class Item {
                 params = [];
                 for (let key in this.equipment_params) {
                     if (this.equipment_params.hasOwnProperty(key)) {
-                        if (this.equipment_params[key].enabled){
+                        if (this.equipment_params[key].enabled) {
                             params.push({Name: key, Value: this.equipment_params[key]['value']});
                         }
                     }
@@ -259,7 +259,7 @@ class Item {
                 params = [];
                 for (let key in this.everyturn_inbattle_params) {
                     if (this.everyturn_inbattle_params.hasOwnProperty(key)) {
-                        if (this.everyturn_inbattle_params[key].enabled){
+                        if (this.everyturn_inbattle_params[key].enabled) {
                             params.push({Name: key, Value: this.everyturn_inbattle_params[key]['value']})
                         }
                     }
@@ -273,7 +273,7 @@ class Item {
                 params = [];
                 for (let key in this.everyturn_ailment_params) {
                     if (this.everyturn_ailment_params.hasOwnProperty(key)) {
-                        if (this.everyturn_ailment_params[key].enabled){
+                        if (this.everyturn_ailment_params[key].enabled) {
                             params.push({
                                 Name: key,
                                 Action: this.everyturn_ailment_params[key].action,
@@ -309,7 +309,7 @@ class Item {
                 params = [];
                 for (let key in this.inattack_inbattle_params) {
                     if (this.inattack_inbattle_params.hasOwnProperty(key)) {
-                        if (this.inattack_inbattle_params[key].enabled){
+                        if (this.inattack_inbattle_params[key].enabled) {
                             params.push({Name: key, Value: this.inattack_inbattle_params[key]['value']})
                         }
                     }
@@ -323,7 +323,7 @@ class Item {
                 params = [];
                 for (let key in this.inattack_ailment_params) {
                     if (this.inattack_ailment_params.hasOwnProperty(key)) {
-                        if (this.inattack_ailment_params[key].enabled){
+                        if (this.inattack_ailment_params[key].enabled) {
                             params.push({
                                 Name: key,
                                 Action: this.inattack_ailment_params[key].action,
@@ -359,7 +359,7 @@ class Item {
                 params = [];
                 for (let key in this.inbeattack_inbattle_params) {
                     if (this.inbeattack_inbattle_params.hasOwnProperty(key)) {
-                        if (this.inbeattack_inbattle_params[key].enabled){
+                        if (this.inbeattack_inbattle_params[key].enabled) {
                             params.push({Name: key, Value: this.inbeattack_inbattle_params[key]['value']})
                         }
                     }
@@ -373,7 +373,7 @@ class Item {
                 params = [];
                 for (let key in this.inbeattack_ailment_params) {
                     if (this.inbeattack_ailment_params.hasOwnProperty(key)) {
-                        if (this.inbeattack_ailment_params[key].enabled){
+                        if (this.inbeattack_ailment_params[key].enabled) {
                             params.push({
                                 Name: key,
                                 Action: this.inbeattack_ailment_params[key].action,
@@ -508,70 +508,6 @@ class Item {
             }
             ref = ref[key];
         });
-    }
-
-    usingWalkFieldParameters() {
-        return this.walkfield_common_hp_enabled || this.walkfield_common_atp_enabled;
-    }
-
-    usingWalkingFieldInbattleParameters() {
-        return this.everyturn_inbattle_hp_enabled || this.everyturn_inbattle_atp_enabled ||
-            this.everyturn_inbattle_accuracy_enabled || this.everyturn_inbattle_avoidance_enabled || this.everyturn_inbattle_attack_enabled ||
-            this.everyturn_inbattle_agility_enabled || this.everyturn_inbattle_magicdefence_enabled || this.everyturn_inbattle_physicaldefence_enabled;
-    }
-
-    usingEveryturnCommonParameters() {
-        return this.everyturn_common_hp_enabled || this.everyturn_common_atp_enabled;
-    }
-
-    usingEveryturnInbattleParameters() {
-        return this.everyturn_inbattle_hp_enabled || this.everyturn_inbattle_atp_enabled ||
-            this.everyturn_inbattle_accuracy_enabled || this.everyturn_inbattle_avoidance_enabled || this.everyturn_inbattle_attack_enabled ||
-            this.everyturn_inbattle_agility_enabled || this.everyturn_inbattle_magicdefence_enabled || this.everyturn_inbattle_physicaldefence_enabled;
-    }
-
-    usingEveryturnInbattleAilments() {
-        return this.everyturn_inbattle_poison_enabled || this.everyturn_inbattle_sleep_enabled || this.everyturn_inbattle_frostbite_enabled ||
-            this.everyturn_inbattle_paralysis_enabled || this.everyturn_inbattle_bleeding_enabled || this.everyturn_inbattle_confusion_enabled ||
-            this.everyturn_inbattle_blindness_enabled || this.everyturn_inbattle_weakness_enabled;
-    }
-
-    usingInattackCommonParameters() {
-        return this.inattack_common_hp_enabled || this.inattack_common_atp_enabled;
-    }
-
-    usingInattackInbattleParameters() {
-        return this.inattack_inbattle_hp_enabled || this.inattack_inbattle_atp_enabled ||
-            this.inattack_inbattle_accuracy_enabled || this.inattack_inbattle_avoidance_enabled || this.inattack_inbattle_attack_enabled ||
-            this.inattack_inbattle_agility_enabled || this.inattack_inbattle_magicdefence_enabled || this.inattack_inbattle_physicaldefence_enabled;
-    }
-
-    usingInattackInbattleAilments() {
-        return this.inattack_inbattle_poison_enabled || this.inattack_inbattle_sleep_enabled || this.inattack_inbattle_frostbite_enabled ||
-            this.inattack_inbattle_paralysis_enabled || this.inattack_inbattle_bleeding_enabled || this.inattack_inbattle_confusion_enabled ||
-            this.inattack_inbattle_blindness_enabled || this.inattack_inbattle_weakness_enabled;
-    }
-
-    usingInbeattackCommonParameters() {
-        return this.inbeattack_common_hp_enabled || this.inbeattack_common_atp_enabled;
-    }
-
-    usingInbeattackInbattleParameters() {
-        return this.inbeattack_inbattle_hp_enabled || this.inbeattack_inbattle_atp_enabled ||
-            this.inbeattack_inbattle_accuracy_enabled || this.inbeattack_inbattle_avoidance_enabled || this.inbeattack_inbattle_attack_enabled ||
-            this.inbeattack_inbattle_agility_enabled || this.inbeattack_inbattle_magicdefence_enabled || this.inbeattack_inbattle_physicaldefence_enabled;
-    }
-
-    usingInbeattackInbattleAilments() {
-        return this.inbeattack_inbattle_poison_enabled || this.inbeattack_inbattle_sleep_enabled || this.inbeattack_inbattle_frostbite_enabled ||
-            this.inbeattack_inbattle_paralysis_enabled || this.inbeattack_inbattle_bleeding_enabled || this.inbeattack_inbattle_confusion_enabled ||
-            this.inbeattack_inbattle_blindness_enabled || this.inbeattack_inbattle_weakness_enabled;
-    }
-
-    usingEquipmentInbattleParameters() {
-        return this.equipment_inbattle_hp_enabled || this.equipment_inbattle_atp_enabled ||
-            this.equipment_inbattle_accuracy_enabled || this.equipment_inbattle_avoidance_enabled || this.equipment_inbattle_attack_enabled ||
-            this.equipment_inbattle_agility_enabled || this.equipment_inbattle_magicdefence_enabled || this.equipment_inbattle_physicaldefence_enabled;
     }
 }
 
