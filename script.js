@@ -45,13 +45,12 @@ class Item {
         this.absolute_param_categories.forEach((name) => {
             this.normal_inbattle_params[name] = {value: 0, enabled: false};
         });
-        this.normal_inbattle_target = "Person";
 
         this.normal_ailment_params = {};
         this.ailment_param_categories.forEach((name) => {
             this.normal_ailment_params[name] = {action: "Give", probability: 100, enabled: false}
         });
-        this.normal_inbattle_ailment_target = "Person";
+        this.normal_inbattle_target = "Person";
         this.normal_inbattle_customevent = {value: 0, enabled: false};
 
         this.equipment_category = "Head";
@@ -180,7 +179,7 @@ class Item {
                 }
             }
 
-            if (this.checkUsing()) {
+            if (this.checkUsing(this.normal_inbattle_params)) {
                 this.AddElement(e, "NormalUse.InBattle.TemporaryParameter", params);
                 this.AddElement(e, "NormalUse.InBattle.TemporaryParameterTarget", this.normal_inbattle_target);
             }
@@ -200,7 +199,7 @@ class Item {
 
             if (this.checkUsing(this.normal_ailment_params)) {
                 this.AddElement(e, "NormalUse.InBattle.StatusAilment", params);
-                this.AddElement(e, "NormalUse.InBattle.AilmentTarget", this.normal_inbattle_ailment_target);
+                this.AddElement(e, "NormalUse.InBattle.Target", this.normal_inbattle_target);
             }
 
             if (this.normal_inbattle_customevent.enabled) {
@@ -406,16 +405,7 @@ class Item {
                 if ("CurrentParameter" in common) {
                     let current = common.CurrentParameter;
                     current.forEach((data) => {
-                        switch (data.Name) {
-                            case "HP":
-                                this.normal_common_params.HP.enabled = true;
-                                this.normal_common_params.HP.value = data.Value;
-                                break;
-                            case "ATP":
-                                this.normal_common_params.ATP.enabled = true;
-                                this.normal_common_params.ATP.value = data.Value;
-                                break;
-                        }
+                        this.normal_common_params[data.Name] = {value: data.Value, enabled: true};
                     });
                 }
                 if ("CurrentParameterTarget" in common) {
@@ -427,48 +417,38 @@ class Item {
                 if ("AbsoluteParameter" in infield) {
                     let absparam = infield.AbsoluteParameter;
                     absparam.forEach((data) => {
-                        switch (data.Name) {
-                            case "HP":
-                                this.normal_infield_hp_enabled = true;
-                                this.normal_infield_hp = data.Value;
-                                break;
-                            case "ATP":
-                                this.normal_infield_atp_enabled = true;
-                                this.normal_infield_atp = data.Value;
-                                break;
-                            case "Accuracy":
-                                this.normal_infield_accuracy_enabled = true;
-                                this.normal_infield_accuracy = data.Value;
-                                break;
-                            case "Avoidance":
-                                this.normal_infield_avoidance_enabled = true;
-                                this.normal_infield_avoidance = data.Value;
-                                break;
-                            case "Agility":
-                                this.normal_infield_agility_enabled = true;
-                                this.normal_infield_agility = data.Value;
-                                break;
-                            case "MagicDefence":
-                                this.normal_infield_magicdefence_enabled = true;
-                                this.normal_infield_magicdefence = data.Value;
-                                break;
-                            case "PhysicalDefence":
-                                this.normal_infield_physicaldefence_enabled = true;
-                                this.normal_infield_physicaldefence = data.Value;
-                                break;
-                        }
+                        this.normal_infield_params[data.Name] = {value: data.Value, enabled: true};
                     });
                 }
                 if ("AbsoluteParameterTarget" in infield) {
                     this.normal_infield_target = infield.AbsoluteParameterTarget;
                 }
                 if ("CustomEvent" in infield) {
-                    this.normal_infield_customevent_enabled = true;
-                    this.normal_infield_customevent_id = infield.CustomEvent
+                    this.normal_infield_customevent = {value: infield.CustomEvent, enabled: true};
                 }
             }
             if ("InBattle" in normal) {
-
+                let inbattle = normal.InBattle;
+                if ("TemporaryParameter" in inbattle) {
+                    let tempparam = inbattle.TemporaryParameter;
+                    tempparam.forEach((data) => {
+                        this.normal_inbattle_params[data.Name] = {value: data.Value, enabled: true};
+                    });
+                }
+                if ("StatusAilment" in inbattle) {
+                    let ailment = inbattle.StatusAilment;
+                    ailment.forEach((data) => {
+                        this.normal_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                    });
+                }
+                if ("Target" in inbattle) {
+                    let target = inbattle.Target;
+                    this.normal_inbattle_target = target;
+                }
+                if ("CustomEvent" in inbattle) {
+                    let customevent = inbattle.CustomEvent;
+                    this.normal_inbattle_customevent = {value: customevent, enabled: true};
+                }
             }
         }
         console.log(parsed);
@@ -539,13 +519,14 @@ new Vue({
         addItem: function () {
             let new_item = new Item();
             let found = false;
-            this.items.some((e, i) => {
-                if (e.id !== i) {
+            console.log(this.items.length);
+            for (let i = 0; i < this.items.length; i++) {
+                if (this.items[i].id !== i) {
                     new_item.id = i;
                     found = true;
-                    return true;
+                    break;
                 }
-            });
+            }
             if (!found) {
                 new_item.id = this.items.length;
             }
@@ -601,7 +582,7 @@ new Vue({
             this.items = [];
             data.forEach((row, index) => {
                 let item = new Item();
-                item.id = row.Name;
+                item.id = parseInt(row.Name);
                 item.name = row.itemName;
                 item.category = row.category;
                 item.description = row.description;
@@ -610,11 +591,12 @@ new Vue({
                 item.can_use_in_battle = row.canUseInBattle;
                 item.is_equipment = row.isEquipment;
                 item.can_selling = row.canSell;
-                item.buying_price = row.buyingPrice;
-                item.selling_price = row.sellingPrice;
+                item.buying_price = parseInt(row.buyingPrice);
+                item.selling_price = parseInt(row.sellingPrice);
                 item.LoadJson(row.effects);
                 this.items.push(item);
             });
+            this.items.sort(this.itemCompare);
         }
     },
     computed: {}
