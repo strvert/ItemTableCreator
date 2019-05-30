@@ -21,277 +21,120 @@ class Item {
         this.in_attack = false;
         this.in_be_attacked = false;
 
-        this.normal_use_common_hp = 0;
-        this.normal_use_common_hp_enabled = false;
-        this.normal_use_common_atp = 0;
-        this.normal_use_common_atp_enabled = false;
-        this.normal_use_common_target = "Person";
+        this.current_param_categories = ['HP', 'ATP'];
+        this.current_param_category_labels = ['HP', 'ATP'];
+        this.absolute_param_categories = ['HP', 'ATP', 'Accuracy', 'Avoidance', 'Attack', 'Agility', 'MagicDefence', 'PhysicalDefence'];
+        this.absolute_param_category_labels = ['HP', 'ATP', '命中力', '回避力', '攻撃力', '敏捷性', '耐魔力', '防御力'];
+        this.ailment_param_categories = ['Poison', 'Sleep', 'Frostbite', 'Paralysis', 'Bleeding', 'Confusion', 'Blindness', 'Weakness'];
+        this.ailment_param_category_labels = ['毒', '睡眠', '凍傷', '麻痺', '出血', '錯乱', '盲目', '脱力'];
 
-        this.normal_infield_atp = 0;
-        this.normal_infield_atp_enabled = false;
-        this.normal_infield_hp = 0;
-        this.normal_infield_hp_enabled = false;
-        this.normal_infield_accuracy = 0;
-        this.normal_infield_accuracy_enabled = false;
-        this.normal_infield_avoidance = 0;
-        this.normal_infield_avoidance_enabled = false;
-        this.normal_infield_attack = 0;
-        this.normal_infield_attack_enabled = false;
-        this.normal_infield_agility = 0;
-        this.normal_infield_agility_enabled = false;
-        this.normal_infield_magicdefence = 0;
-        this.normal_infield_magicdefence_enabled = false;
-        this.normal_infield_physicaldefence = 0;
-        this.normal_infield_physicaldefence_enabled = false;
+        this.normal_common_params = {};
+        this.current_param_categories.forEach((name) => {
+            this.normal_common_params[name] = {value: 0, enabled: false};
+        });
+        this.normal_common_target = "Person";
+
+        this.normal_infield_params = {};
+        this.absolute_param_categories.forEach((name) => {
+            this.normal_infield_params[name] = {value: 0, enabled: false};
+        });
         this.normal_infield_target = "Person";
+        this.normal_infield_customevent = {value: 0, enabled: false};
 
-        this.normal_infield_customevent_id = 0;
-        this.normal_infield_customevent_enabled = false;
-
-        this.normal_inbattle_hp = 0;
-        this.normal_inbattle_hp_enabled = false;
-        this.normal_inbattle_atp = 0;
-        this.normal_inbattle_atp_enabled = false;
-        this.normal_inbattle_accuracy = 0;
-        this.normal_inbattle_accuracy_enabled = false;
-        this.normal_inbattle_avoidance = 0;
-        this.normal_inbattle_avoidance_enabled = false;
-        this.normal_inbattle_attack = 0;
-        this.normal_inbattle_attack_enabled = false;
-        this.normal_inbattle_agility = 0;
-        this.normal_inbattle_agility_enabled = false;
-        this.normal_inbattle_magicdefence = 0;
-        this.normal_inbattle_magicdefence_enabled = false;
-        this.normal_inbattle_physicaldefence = 0;
-        this.normal_inbattle_physicaldefence_enabled = false;
+        this.normal_inbattle_params = {};
+        this.absolute_param_categories.forEach((name) => {
+            this.normal_inbattle_params[name] = {value: 0, enabled: false};
+        });
         this.normal_inbattle_target = "Person";
 
-        this.normal_inbattle_poison_action = "Give";
-        this.normal_inbattle_poison_probability = 100;
-        this.normal_inbattle_poison_enabled = false;
-        this.normal_inbattle_sleep_action = "Give";
-        this.normal_inbattle_sleep_probability = 100;
-        this.normal_inbattle_sleep_enabled = false;
-        this.normal_inbattle_frostbite_action = "Give";
-        this.normal_inbattle_frostbite_probability = 100;
-        this.normal_inbattle_frostbite_enabled = false;
-        this.normal_inbattle_paralysis_action = "Give";
-        this.normal_inbattle_paralysis_probability = 100;
-        this.normal_inbattle_paralysis_enabled = false;
-        this.normal_inbattle_bleeding_action = "Give";
-        this.normal_inbattle_bleeding_probability = 100;
-        this.normal_inbattle_bleeding_enabled = false;
-        this.normal_inbattle_confusion_action = "Give";
-        this.normal_inbattle_confusion_probability = 100;
-        this.normal_inbattle_confusion_enabled = false;
-        this.normal_inbattle_blindness_action = "Give";
-        this.normal_inbattle_blindness_probability = 100;
-        this.normal_inbattle_blindness_enabled = false;
-        this.normal_inbattle_weakness_action = "Give";
-        this.normal_inbattle_weakness_probability = 100;
-        this.normal_inbattle_weakness_enabled = false;
+        this.normal_ailment_params = {};
+        this.ailment_param_categories.forEach((name) => {
+            this.normal_ailment_params[name] = {action: "Give", probability: 100, enabled: false}
+        });
         this.normal_inbattle_ailment_target = "Person";
-
-        this.normal_inbattle_customevent_id = 0;
-        this.normal_inbattle_customevent_enabled = false;
-
-        this.walkfield_common_hp = 0;
-        this.walkfield_common_hp_enabled = false;
-        this.walkfield_common_atp = 0;
-        this.walkfield_common_atp_enabled = false;
-        this.walkfield_customevent_id = 0;
-        this.walkfield_customevent_enabled = false;
-        this.walkfield_common_target = "Person";
-
-        this.everyturn_common_hp = 0;
-        this.everyturn_common_hp_enabled = false;
-        this.everyturn_common_atp = 0;
-        this.everyturn_common_atp_enabled = false;
-        this.everyturn_common_target = "Person";
-
-        this.everyturn_inbattle_hp = 0;
-        this.everyturn_inbattle_hp_enabled = false;
-        this.everyturn_inbattle_atp = 0;
-        this.everyturn_inbattle_atp_enabled = false;
-        this.everyturn_inbattle_accuracy = 0;
-        this.everyturn_inbattle_accuracy_enabled = false;
-        this.everyturn_inbattle_avoidance = 0;
-        this.everyturn_inbattle_avoidance_enabled = false;
-        this.everyturn_inbattle_attack = 0;
-        this.everyturn_inbattle_attack_enabled = false;
-        this.everyturn_inbattle_agility = 0;
-        this.everyturn_inbattle_agility_enabled = false;
-        this.everyturn_inbattle_magicdefence = 0;
-        this.everyturn_inbattle_magicdefence_enabled = false;
-        this.everyturn_inbattle_physicaldefence = 0;
-        this.everyturn_inbattle_physicaldefence_enabled = false;
-        this.everyturn_inbattle_target = "Person";
-
-        this.everyturn_inbattle_poison_action = "Give";
-        this.everyturn_inbattle_poison_probability = 100;
-        this.everyturn_inbattle_poison_enabled = false;
-        this.everyturn_inbattle_sleep_action = "Give";
-        this.everyturn_inbattle_sleep_probability = 100;
-        this.everyturn_inbattle_sleep_enabled = false;
-        this.everyturn_inbattle_frostbite_action = "Give";
-        this.everyturn_inbattle_frostbite_probability = 100;
-        this.everyturn_inbattle_frostbite_enabled = false;
-        this.everyturn_inbattle_paralysis_action = "Give";
-        this.everyturn_inbattle_paralysis_probability = 100;
-        this.everyturn_inbattle_paralysis_enabled = false;
-        this.everyturn_inbattle_bleeding_action = "Give";
-        this.everyturn_inbattle_bleeding_probability = 100;
-        this.everyturn_inbattle_bleeding_enabled = false;
-        this.everyturn_inbattle_confusion_action = "Give";
-        this.everyturn_inbattle_confusion_probability = 100;
-        this.everyturn_inbattle_confusion_enabled = false;
-        this.everyturn_inbattle_blindness_action = "Give";
-        this.everyturn_inbattle_blindness_probability = 100;
-        this.everyturn_inbattle_blindness_enabled = false;
-        this.everyturn_inbattle_weakness_action = "Give";
-        this.everyturn_inbattle_weakness_probability = 100;
-        this.everyturn_inbattle_weakness_enabled = false;
-        this.everyturn_inbattle_ailment_target = "Person";
-
-        this.everyturn_inbattle_customevent_id = 0;
-        this.everyturn_inbattle_customevent_enabled = false;
+        this.normal_inbattle_customevent = {value: 0, enabled: false};
 
         this.equipment_category = "Head";
-        this.equipment_inbattle_hp = 0;
-        this.equipment_inbattle_hp_enabled = false;
-        this.equipment_inbattle_atp = 0;
-        this.equipment_inbattle_atp_enabled = false;
-        this.equipment_inbattle_accuracy = 0;
-        this.equipment_inbattle_accuracy_enabled = false;
-        this.equipment_inbattle_avoidance = 0;
-        this.equipment_inbattle_avoidance_enabled = false;
-        this.equipment_inbattle_attack = 0;
-        this.equipment_inbattle_attack_enabled = false;
-        this.equipment_inbattle_agility = 0;
-        this.equipment_inbattle_agility_enabled = false;
-        this.equipment_inbattle_magicdefence = 0;
-        this.equipment_inbattle_magicdefence_enabled = false;
-        this.equipment_inbattle_physicaldefence = 0;
-        this.equipment_inbattle_physicaldefence_enabled = false;
-        this.equipment_inbattle_target = "Person";
-        this.equipment_inbattle_target_enabled = false;
+        this.equipment_params = {};
+        this.absolute_param_categories.forEach((name) => {
+            this.equipment_params[name] = {value: 0, enabled: false};
+        });
 
-        this.equipment_inbattle_customevent_id = 0;
-        this.equipment_inbattle_customevent_enabled = false;
+        this.everyturn_common_params = {};
+        this.current_param_categories.forEach((name) => {
+            this.everyturn_common_params[name] = {value: 0, enabled: false};
+        });
+        this.everyturn_common_target = "Person";
 
-        this.inattack_common_hp = 0;
-        this.inattack_common_hp_enabled = false;
-        this.inattack_common_atp = 0;
-        this.inattack_common_atp_enabled = false;
-        this.inattack_customevent_id = 0;
-        this.inattack_customevent_enabled = false;
+        this.everyturn_inbattle_params = {};
+        this.absolute_param_categories.forEach((name) => {
+            this.everyturn_inbattle_params[name] = {value: 0, enabled: false};
+        });
+        this.everyturn_inbattle_target = "Person";
+
+        this.everyturn_ailment_params = {};
+        this.ailment_param_categories.forEach((name) => {
+            this.everyturn_ailment_params[name] = {action: "Give", probability: 100, enabled: false};
+        });
+        this.everyturn_inbattle_ailment_target = "Person";
+        this.everyturn_customevent = {value: 0, enabled: false};
+
+        this.inattack_common_params = {};
+        this.current_param_categories.forEach((name) => {
+            this.inattack_common_params[name] = {value: 0, enabled: false};
+        });
         this.inattack_common_target = "Person";
+        this.inattack_customevent = {value: 0, enabled: false};
 
-        this.inattack_inbattle_hp = 0;
-        this.inattack_inbattle_hp_enabled = false;
-        this.inattack_inbattle_atp = 0;
-        this.inattack_inbattle_atp_enabled = false;
-        this.inattack_inbattle_accuracy = 0;
-        this.inattack_inbattle_accuracy_enabled = false;
-        this.inattack_inbattle_avoidance = 0;
-        this.inattack_inbattle_avoidance_enabled = false;
-        this.inattack_inbattle_attack = 0;
-        this.inattack_inbattle_attack_enabled = false;
-        this.inattack_inbattle_agility = 0;
-        this.inattack_inbattle_agility_enabled = false;
-        this.inattack_inbattle_magicdefence = 0;
-        this.inattack_inbattle_magicdefence_enabled = false;
-        this.inattack_inbattle_physicaldefence = 0;
-        this.inattack_inbattle_physicaldefence_enabled = false;
+        this.inattack_inbattle_params = {};
+        this.absolute_param_categories.forEach((name) => {
+            this.inattack_inbattle_params[name] = {value: 0, enabled: false};
+        });
         this.inattack_inbattle_target = "Person";
-        this.inattack_inbattle_target_enabled = false;
 
-        this.inattack_inbattle_poison_action = "Give";
-        this.inattack_inbattle_poison_probability = 100;
-        this.inattack_inbattle_poison_enabled = false;
-        this.inattack_inbattle_sleep_action = "Give";
-        this.inattack_inbattle_sleep_probability = 100;
-        this.inattack_inbattle_sleep_enabled = false;
-        this.inattack_inbattle_frostbite_action = "Give";
-        this.inattack_inbattle_frostbite_probability = 100;
-        this.inattack_inbattle_frostbite_enabled = false;
-        this.inattack_inbattle_paralysis_action = "Give";
-        this.inattack_inbattle_paralysis_probability = 100;
-        this.inattack_inbattle_paralysis_enabled = false;
-        this.inattack_inbattle_bleeding_action = "Give";
-        this.inattack_inbattle_bleeding_probability = 100;
-        this.inattack_inbattle_bleeding_enabled = false;
-        this.inattack_inbattle_confusion_action = "Give";
-        this.inattack_inbattle_confusion_probability = 100;
-        this.inattack_inbattle_confusion_enabled = false;
-        this.inattack_inbattle_blindness_action = "Give";
-        this.inattack_inbattle_blindness_probability = 100;
-        this.inattack_inbattle_blindness_enabled = false;
-        this.inattack_inbattle_weakness_action = "Give";
-        this.inattack_inbattle_weakness_probability = 100;
-        this.inattack_inbattle_weakness_enabled = false;
+        this.inattack_ailment_params = {};
+        this.ailment_param_categories.forEach((name) => {
+            this.inattack_ailment_params[name] = {action: "Give", probability: 100, enabled: false};
+        });
         this.inattack_inbattle_ailment_target = "Person";
-        this.inattack_inbattle_ailment_target_enabled = false;
+        this.inattack_inbattle_customevent = {value: 0, enabled: false};
 
-        this.inattack_inbattle_customevent_id = 0;
-        this.inattack_inbattle_customevent_enabled = false;
-
-        this.inbeattack_common_hp = 0;
-        this.inbeattack_common_hp_enabled = false;
-        this.inbeattack_common_atp = 0;
-        this.inbeattack_common_atp_enabled = false;
+        this.inbeattack_common_params = {};
+        this.current_param_categories.forEach((name) => {
+            this.inbeattack_common_params[name] = {value: 0, enabled: false};
+        });
         this.inbeattack_common_target = "Person";
-        this.inbeattack_customevent_id = 0;
-        this.inbeattack_customevent_enabled = false;
+        this.inbeattack_common_customevent = {value: 0, enabled: false};
 
-        this.inbeattack_inbattle_hp = 0;
-        this.inbeattack_inbattle_hp_enabled = false;
-        this.inbeattack_inbattle_atp = 0;
-        this.inbeattack_inbattle_atp_enabled = false;
-        this.inbeattack_inbattle_accuracy = 0;
-        this.inbeattack_inbattle_accuracy_enabled = false;
-        this.inbeattack_inbattle_avoidance = 0;
-        this.inbeattack_inbattle_avoidance_enabled = false;
-        this.inbeattack_inbattle_attack = 0;
-        this.inbeattack_inbattle_attack_enabled = false;
-        this.inbeattack_inbattle_agility = 0;
-        this.inbeattack_inbattle_agility_enabled = false;
-        this.inbeattack_inbattle_magicdefence = 0;
-        this.inbeattack_inbattle_magicdefence_enabled = false;
-        this.inbeattack_inbattle_physicaldefence = 0;
-        this.inbeattack_inbattle_physicaldefence_enabled = false;
+        this.inbeattack_inbattle_params = {};
+        this.absolute_param_categories.forEach((name) => {
+            this.inbeattack_inbattle_params[name] = {value: 0, enabled: false};
+        });
         this.inbeattack_inbattle_target = "Person";
-        this.inbeattack_inbattle_target_enabled = false;
 
-        this.inbeattack_inbattle_poison_action = "Give";
-        this.inbeattack_inbattle_poison_probability = 100;
-        this.inbeattack_inbattle_poison_enabled = false;
-        this.inbeattack_inbattle_sleep_action = "Give";
-        this.inbeattack_inbattle_sleep_probability = 100;
-        this.inbeattack_inbattle_sleep_enabled = false;
-        this.inbeattack_inbattle_frostbite_action = "Give";
-        this.inbeattack_inbattle_frostbite_probability = 100;
-        this.inbeattack_inbattle_frostbite_enabled = false;
-        this.inbeattack_inbattle_paralysis_action = "Give";
-        this.inbeattack_inbattle_paralysis_probability = 100;
-        this.inbeattack_inbattle_paralysis_enabled = false;
-        this.inbeattack_inbattle_bleeding_action = "Give";
-        this.inbeattack_inbattle_bleeding_probability = 100;
-        this.inbeattack_inbattle_bleeding_enabled = false;
-        this.inbeattack_inbattle_confusion_action = "Give";
-        this.inbeattack_inbattle_confusion_probability = 100;
-        this.inbeattack_inbattle_confusion_enabled = false;
-        this.inbeattack_inbattle_blindness_action = "Give";
-        this.inbeattack_inbattle_blindness_probability = 100;
-        this.inbeattack_inbattle_blindness_enabled = false;
-        this.inbeattack_inbattle_weakness_action = "Give";
-        this.inbeattack_inbattle_weakness_probability = 100;
-        this.inbeattack_inbattle_weakness_enabled = false;
-        this.inbeattack_inbattle_ailment_target = "Person";
-        this.inbeattack_inbattle_ailment_target_enabled = false;
+        this.inbeattack_ailment_params = {};
+        this.ailment_param_categories.forEach((name) => {
+            this.inbeattack_ailment_params[name] = {action: "Give", probability: 100, enabled: false};
+        });
+        this.inbeattack_inbattle_customevent = {value: 0, enabled: false};
 
-        this.inbeattack_inbattle_customevent_id = 0;
-        this.inbeattack_inbattle_customevent_enabled = false;
+        this.walkfield_common_params = {};
+        this.current_param_categories.forEach((name) => {
+            this.walkfield_common_params[name] = {value: 0, enabled: false};
+        });
+        this.walkfield_common_target = "Person";
+        this.walkfield_customevent = {value: 0, enabled: false};
+    }
+
+    checkUsing(params) {
+        for (let key in params) {
+            if (params.hasOwnProperty(key)) {
+                if (params[key]['enabled']) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     GenerateJson() {
@@ -300,147 +143,69 @@ class Item {
 
         if (this.normal_use) {
             params = [];
-            if (this.normal_use_common_hp_enabled) {
-                params.push({Name: "HP", Value: this.normal_use_common_hp});
+            for (let key in this.normal_common_params) {
+                if (this.normal_common_params.hasOwnProperty(key)) {
+                    if (this.normal_common_params[key].enabled) {
+                        params.push({Name: key, Value: this.normal_common_params[key]['value']});
+                    }
+                }
             }
-            if (this.normal_use_common_atp_enabled) {
-                params.push({Name: "ATP", Value: this.normal_use_common_atp});
-            }
-            if (this.usingNormalUseCommonParameters()) {
+            if (this.checkUsing(this.normal_common_params)) {
                 this.AddElement(e, "NormalUse.Common.CurrentParameter", params);
-                this.AddElement(e, "NormalUse.Common.CurrentParameterTarget", this.normal_use_common_target);
+                this.AddElement(e, "NormalUse.Common.CurrentParameterTarget", this.normal_common_target);
             }
 
             params = [];
-            if (this.normal_infield_hp_enabled) {
-                params.push({Name: "HP", Value: this.normal_infield_hp});
+            for (let key in this.normal_infield_params) {
+                if (this.normal_infield_params.hasOwnProperty(key)) {
+                    if (this.normal_infield_params[key].enabled) {
+                        params.push({Name: key, Value: this.normal_infield_params[key]['value']})
+                    }
+                }
             }
-            if (this.normal_infield_atp_enabled) {
-                params.push({Name: "ATP", Value: this.normal_infield_atp});
-            }
-            if (this.normal_infield_accuracy_enabled) {
-                params.push({Name: "Accuracy", Value: this.normal_infield_accuracy});
-            }
-            if (this.normal_infield_avoidance_enabled) {
-                params.push({Name: "Avoidance", Value: this.normal_infield_avoidance});
-            }
-            if (this.normal_infield_attack_enabled) {
-                params.push({Name: "Attack", Value: this.normal_infield_attack});
-            }
-            if (this.normal_infield_agility_enabled) {
-                params.push({Name: "Agility", Value: this.normal_infield_agility});
-            }
-            if (this.normal_infield_magicdefence_enabled) {
-                params.push({Name: "MagicDefence", Value: this.normal_infield_magicdefence});
-            }
-            if (this.normal_infield_physicaldefence_enabled) {
-                params.push({Name: "PhysicalDefence", Value: this.normal_infield_physicaldefence});
-            }
-            if (this.usingInfieldParameters()) {
+            if (this.checkUsing(this.normal_infield_params)) {
                 this.AddElement(e, "NormalUse.InField.AbsoluteParameter", params);
                 this.AddElement(e, "NormalUse.InField.AbsoluteParameterTarget", this.normal_infield_target);
             }
 
-            if (this.normal_infield_customevent_enabled) {
-                this.AddElement(e, "NormalUse.InField.CustomEvent", this.normal_infield_customevent_id);
+            if (this.normal_infield_customevent.enabled) {
+                this.AddElement(e, "NormalUse.InField.CustomEvent", this.normal_infield_customevent.value);
             }
 
             params = [];
-            if (this.normal_inbattle_hp_enabled) {
-                params.push({Name: "HP", Value: this.normal_inbattle_hp});
-            }
-            if (this.normal_inbattle_atp_enabled) {
-                params.push({Name: "ATP", Value: this.normal_inbattle_atp});
-            }
-            if (this.normal_inbattle_accuracy_enabled) {
-                params.push({Name: "Accuracy", Value: this.normal_inbattle_accuracy});
-            }
-            if (this.normal_inbattle_avoidance_enabled) {
-                params.push({Name: "Avoidance", Value: this.normal_inbattle_avoidance});
-            }
-            if (this.normal_inbattle_attack_enabled) {
-                params.push({Name: "Attack", Value: this.normal_inbattle_attack});
-            }
-            if (this.normal_inbattle_agility_enabled) {
-                params.push({Name: "Agility", Value: this.normal_inbattle_agility});
-            }
-            if (this.normal_inbattle_magicdefence_enabled) {
-                params.push({Name: "MagicDefence", Value: this.normal_inbattle_magicdefence});
-            }
-            if (this.normal_inbattle_physicaldefence_enabled) {
-                params.push({Name: "PhysicalDefence", Value: this.normal_inbattle_physicaldefence});
+            for (let key in this.normal_inbattle_params) {
+                if (this.normal_inbattle_params.hasOwnProperty(key)) {
+                    if (this.normal_inbattle_params[key].enabled){
+                        params.push({Name: key, Value: this.normal_inbattle_params[key]['value']})
+                    }
+                }
             }
 
-            if (this.usingInbattleParameters()) {
+            if (this.checkUsing()) {
                 this.AddElement(e, "NormalUse.InBattle.TemporaryParameter", params);
                 this.AddElement(e, "NormalUse.InBattle.TemporaryParameterTarget", this.normal_inbattle_target);
             }
 
             params = [];
-            if (this.normal_inbattle_poison_enabled) {
-                params.push({
-                    Name: "Poison",
-                    Action: this.normal_inbattle_poison_action,
-                    Probability: this.normal_inbattle_poison_probability
-                });
-            }
-            if (this.normal_inbattle_sleep_enabled) {
-                params.push({
-                    Name: "Sleep",
-                    Action: this.normal_inbattle_sleep_action,
-                    Probability: this.normal_inbattle_sleep_probability
-                });
-            }
-            if (this.normal_inbattle_frostbite_enabled) {
-                params.push({
-                    Name: "Frostbite",
-                    Action: this.normal_inbattle_frostbite_action,
-                    Probability: this.normal_inbattle_frostbite_probability
-                });
-            }
-            if (this.normal_inbattle_paralysis_enabled) {
-                params.push({
-                    Name: "Paralysis",
-                    Action: this.normal_inbattle_paralysis_action,
-                    Probability: this.normal_inbattle_paralysis_probability
-                });
-            }
-            if (this.normal_inbattle_bleeding_enabled) {
-                params.push({
-                    Name: "Bleeding",
-                    Action: this.normal_inbattle_bleeding_action,
-                    Probability: this.normal_inbattle_bleeding_probability
-                });
-            }
-            if (this.normal_inbattle_confusion_enabled) {
-                params.push({
-                    Name: "Confusion",
-                    Action: this.normal_inbattle_confusion_action,
-                    Probability: this.normal_inbattle_confusion_probability
-                });
-            }
-            if (this.normal_inbattle_blindness_enabled) {
-                params.push({
-                    Name: "Blindness",
-                    Action: this.normal_inbattle_blindness_action,
-                    Probability: this.normal_inbattle_blindness_probability
-                });
-            }
-            if (this.normal_inbattle_weakness_enabled) {
-                params.push({
-                    Name: "Weakness",
-                    Action: this.normal_inbattle_weakness_action,
-                    Probability: this.normal_inbattle_weakness_probability
-                });
+            for (let key in this.normal_ailment_params) {
+                if (this.normal_ailment_params.hasOwnProperty(key)) {
+                    if (this.normal_ailment_params[key].enabled){
+                        params.push({
+                            Name: key,
+                            Action: this.normal_ailment_params[key].action,
+                            Probability: this.normal_ailment_params[key].probability
+                        });
+                    }
+                }
             }
 
-            if (this.usingInbattleAilments()) {
+            if (this.checkUsing(this.normal_ailment_params)) {
                 this.AddElement(e, "NormalUse.InBattle.StatusAilment", params);
                 this.AddElement(e, "NormalUse.InBattle.AilmentTarget", this.normal_inbattle_ailment_target);
             }
 
-            if (this.normal_inbattle_customevent_enabled) {
-                this.AddElement(e, "NormalUse.InBattle.CustomEvent", this.normal_inbattle_customevent_id);
+            if (this.normal_inbattle_customevent.enabled) {
+                this.AddElement(e, "NormalUse.InBattle.CustomEvent", this.normal_inbattle_customevent.value);
             }
         }
 
@@ -449,34 +214,16 @@ class Item {
                 this.AddElement(e, "Equipment.Category", this.equipment_category);
 
                 params = [];
-                if (this.equipment_inbattle_hp_enabled) {
-                    params.push({Name: "HP", Value: this.equipment_inbattle_hp});
-                }
-                if (this.equipment_inbattle_atp_enabled) {
-                    params.push({Name: "ATP", Value: this.equipment_inbattle_atp});
-                }
-                if (this.equipment_inbattle_accuracy_enabled) {
-                    params.push({Name: "Accuracy", Value: this.equipment_inbattle_accuracy});
-                }
-                if (this.equipment_inbattle_avoidance_enabled) {
-                    params.push({Name: "Avoidance", Value: this.equipment_inbattle_avoidance});
-                }
-                if (this.equipment_inbattle_attack_enabled) {
-                    params.push({Name: "Attack", Value: this.equipment_inbattle_attack});
-                }
-                if (this.equipment_inbattle_agility_enabled) {
-                    params.push({Name: "Agility", Value: this.equipment_inbattle_agility});
-                }
-                if (this.equipment_inbattle_magicdefence_enabled) {
-                    params.push({Name: "MagicDefence", Value: this.equipment_inbattle_magicdefence});
-                }
-                if (this.equipment_inbattle_physicaldefence_enabled) {
-                    params.push({Name: "PhysicalDefence", Value: this.equipment_inbattle_physicaldefence});
+                for (let key in this.equipment_params) {
+                    if (this.equipment_params.hasOwnProperty(key)) {
+                        if (this.equipment_params[key].enabled){
+                            params.push({Name: key, Value: this.equipment_params[key]['value']});
+                        }
+                    }
                 }
 
-                if (this.usingInbattleParameters()) {
+                if (this.checkUsing(this.equipment_params)) {
                     this.AddElement(e, "Equipment.TemporaryParameter", params);
-                    this.AddElement(e, "Equipment.TemporaryParameterTarget", this.equipment_inbattle_target);
                 }
             }
             if (this.walk_field) {
@@ -602,8 +349,8 @@ class Item {
                     this.AddElement(e, "EveryTurn.AilmentTarget", this.everyturn_inbattle_ailment_target);
                 }
 
-                if (this.everyturn_inbattle_customevent_enabled) {
-                    this.AddElement(e, "EveryTurn.CustomEvent", this.everyturn_inbattle_customevent_id);
+                if (this.everyturn_inbattle_customevent.enabled) {
+                    this.AddElement(e, "EveryTurn.CustomEvent", this.everyturn_inbattle_customevent.value);
                 }
             }
             if (this.in_attack) {
@@ -841,21 +588,21 @@ class Item {
                 let common = normal.Common;
                 if ("CurrentParameter" in common) {
                     let current = common.CurrentParameter;
-                    current.forEach((data)=>{
+                    current.forEach((data) => {
                         switch (data.Name) {
                             case "HP":
-                                this.normal_use_common_hp_enabled = true;
-                                this.normal_use_common_hp = data.Value;
+                                this.normal_common_params.HP.enabled = true;
+                                this.normal_common_params.HP.value = data.Value;
                                 break;
                             case "ATP":
-                                this.normal_use_common_atp_enabled = true;
-                                this.normal_use_common_atp = data.Value;
+                                this.normal_common_params.ATP.enabled = true;
+                                this.normal_common_params.ATP.value = data.Value;
                                 break;
                         }
                     });
                 }
                 if ("CurrentParameterTarget" in common) {
-                    this.normal_use_common_target = common.CurrentParameterTarget;
+                    this.normal_common_target = common.CurrentParameterTarget;
                 }
             }
             if ("InField" in normal) {
@@ -944,28 +691,6 @@ class Item {
             }
             ref = ref[key];
         });
-    }
-
-    usingNormalUseCommonParameters() {
-        return this.normal_use_common_hp_enabled || this.normal_use_common_atp_enabled;
-    }
-
-    usingInfieldParameters() {
-        return this.normal_infield_hp_enabled || this.normal_infield_atp_enabled ||
-            this.normal_infield_accuracy_enabled || this.normal_infield_avoidance_enabled || this.normal_infield_attack_enabled ||
-            this.normal_infield_agility_enabled || this.normal_infield_magicdefence_enabled || this.normal_infield_physicaldefence_enabled;
-    }
-
-    usingInbattleParameters() {
-        return this.normal_inbattle_hp_enabled || this.normal_inbattle_atp_enabled ||
-            this.normal_inbattle_accuracy_enabled || this.normal_inbattle_avoidance_enabled || this.normal_inbattle_attack_enabled ||
-            this.normal_inbattle_agility_enabled || this.normal_inbattle_magicdefence_enabled || this.normal_inbattle_physicaldefence_enabled;
-    }
-
-    usingInbattleAilments() {
-        return this.normal_inbattle_poison_enabled || this.normal_inbattle_sleep_enabled || this.normal_inbattle_frostbite_enabled ||
-            this.normal_inbattle_paralysis_enabled || this.normal_inbattle_bleeding_enabled || this.normal_inbattle_confusion_enabled ||
-            this.normal_inbattle_blindness_enabled || this.normal_inbattle_weakness_enabled;
     }
 
     usingWalkFieldParameters() {
