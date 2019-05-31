@@ -229,7 +229,7 @@ class Item {
                 for (let key in this.walkfield_common_params) {
                     if (this.walkfield_common_params.hasOwnProperty(key)) {
                         if (this.walkfield_common_params[key].enabled) {
-                            params.push({Name: key, Value: this.walkfield_common_params[key]});
+                            params.push({Name: key, Value: this.walkfield_common_params[key].value});
                         }
                     }
                 }
@@ -246,7 +246,7 @@ class Item {
                 for (let key in this.everyturn_common_params) {
                     if (this.everyturn_common_params.hasOwnProperty(key)) {
                         if (this.everyturn_common_params[key].enabled) {
-                            params.push({Name: key, Value: this.everyturn_common_params[key]});
+                            params.push({Name: key, Value: this.everyturn_common_params[key].value});
                         }
                     }
                 }
@@ -259,7 +259,7 @@ class Item {
                 for (let key in this.everyturn_inbattle_params) {
                     if (this.everyturn_inbattle_params.hasOwnProperty(key)) {
                         if (this.everyturn_inbattle_params[key].enabled) {
-                            params.push({Name: key, Value: this.everyturn_inbattle_params[key]['value']})
+                            params.push({Name: key, Value: this.everyturn_inbattle_params[key].value})
                         }
                     }
                 }
@@ -296,7 +296,7 @@ class Item {
                 for (let key in this.inattack_common_params) {
                     if (this.inattack_common_params.hasOwnProperty(key)) {
                         if (this.inattack_common_params[key].enabled) {
-                            params.push({Name: key, Value: this.inattack_common_params[key]});
+                            params.push({Name: key, Value: this.inattack_common_params[key].value});
                         }
                     }
                 }
@@ -309,7 +309,7 @@ class Item {
                 for (let key in this.inattack_inbattle_params) {
                     if (this.inattack_inbattle_params.hasOwnProperty(key)) {
                         if (this.inattack_inbattle_params[key].enabled) {
-                            params.push({Name: key, Value: this.inattack_inbattle_params[key]['value']})
+                            params.push({Name: key, Value: this.inattack_inbattle_params[key].value})
                         }
                     }
                 }
@@ -346,27 +346,27 @@ class Item {
                 for (let key in this.inbeattack_common_params) {
                     if (this.inbeattack_common_params.hasOwnProperty(key)) {
                         if (this.inbeattack_common_params[key].enabled) {
-                            params.push({Name: key, Value: this.inbeattack_common_params[key]});
+                            params.push({Name: key, Value: this.inbeattack_common_params[key].value});
                         }
                     }
                 }
                 if (this.checkUsing(this.inbeattack_common_params)) {
-                    this.AddElement(e, "inbeattack.CurrentParameter", params);
-                    this.AddElement(e, "inbeattack.CurrentParameterTarget", this.inbeattack_common_target);
+                    this.AddElement(e, "InBeAttack.CurrentParameter", params);
+                    this.AddElement(e, "InBeAttack.CurrentParameterTarget", this.inbeattack_common_target);
                 }
 
                 params = [];
                 for (let key in this.inbeattack_inbattle_params) {
                     if (this.inbeattack_inbattle_params.hasOwnProperty(key)) {
                         if (this.inbeattack_inbattle_params[key].enabled) {
-                            params.push({Name: key, Value: this.inbeattack_inbattle_params[key]['value']})
+                            params.push({Name: key, Value: this.inbeattack_inbattle_params[key].value})
                         }
                     }
                 }
 
                 if (this.checkUsing(this.inbeattack_inbattle_params)) {
-                    this.AddElement(e, "inbeattack.TemporaryParameter", params);
-                    this.AddElement(e, "inbeattack.TemporaryParameterTarget", this.inbeattack_inbattle_target);
+                    this.AddElement(e, "InBeAttack.TemporaryParameter", params);
+                    this.AddElement(e, "InBeAttack.TemporaryParameterTarget", this.inbeattack_inbattle_target);
                 }
 
                 params = [];
@@ -383,12 +383,12 @@ class Item {
                 }
 
                 if (this.checkUsing(this.inbeattack_ailment_params)) {
-                    this.AddElement(e, "inbeattack.StatusAilment", params);
-                    this.AddElement(e, "inbeattack.AilmentTarget", this.inbeattack_ailment_target);
+                    this.AddElement(e, "InBeAttack.StatusAilment", params);
+                    this.AddElement(e, "InBeAttack.AilmentTarget", this.inbeattack_ailment_target);
                 }
 
                 if (this.inbeattack_inbattle_customevent.enabled) {
-                    this.AddElement(e, "inbeattack.CustomEvent", this.inbeattack_inbattle_customevent.value);
+                    this.AddElement(e, "InBeAttack.CustomEvent", this.inbeattack_inbattle_customevent.value);
                 }
             }
         }
@@ -403,8 +403,7 @@ class Item {
             if ("Common" in normal) {
                 let common = normal.Common;
                 if ("CurrentParameter" in common) {
-                    let current = common.CurrentParameter;
-                    current.forEach((data) => {
+                    common.CurrentParameter.forEach((data) => {
                         this.normal_common_params[data.Name] = {value: data.Value, enabled: true};
                     });
                 }
@@ -415,8 +414,7 @@ class Item {
             if ("InField" in normal) {
                 let infield = normal.InField;
                 if ("AbsoluteParameter" in infield) {
-                    let absparam = infield.AbsoluteParameter;
-                    absparam.forEach((data) => {
+                    infield.AbsoluteParameter.forEach((data) => {
                         this.normal_infield_params[data.Name] = {value: data.Value, enabled: true};
                     });
                 }
@@ -430,8 +428,7 @@ class Item {
             if ("InBattle" in normal) {
                 let inbattle = normal.InBattle;
                 if ("TemporaryParameter" in inbattle) {
-                    let tempparam = inbattle.TemporaryParameter;
-                    tempparam.forEach((data) => {
+                    inbattle.TemporaryParameter.forEach((data) => {
                         this.normal_inbattle_params[data.Name] = {value: data.Value, enabled: true};
                     });
                 }
@@ -442,13 +439,136 @@ class Item {
                     });
                 }
                 if ("Target" in inbattle) {
-                    let target = inbattle.Target;
-                    this.normal_inbattle_target = target;
+                    this.normal_inbattle_target = inbattle.Target;
                 }
                 if ("CustomEvent" in inbattle) {
-                    let customevent = inbattle.CustomEvent;
-                    this.normal_inbattle_customevent = {value: customevent, enabled: true};
+                    this.normal_inbattle_customevent = {value: inbattle.CustomEvent, enabled: true};
                 }
+            }
+        }
+
+        if ("Equipment" in parsed) {
+            this.equipment = true;
+            let equipment = parsed.Equipment;
+            if ("Category" in equipment) {
+                this.equipment_category = equipment.Category;
+            }
+            if ("TemporaryParameter" in equipment) {
+                equipment.TemporaryParameter.forEach((data) => {
+                    this.equipment_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+        }
+
+        if ("WalkField" in parsed) {
+            this.walk_field = true;
+            let walkfield = parsed.WalkField;
+            if ("CurrentParameter" in walkfield) {
+                walkfield.CurrentParameter.forEach((data) => {
+                    this.walkfield_common_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("CurrentParameterTarget" in walkfield) {
+                this.walkfield_common_target = walkfield.CurrentParameterTarget;
+            }
+            if ("CustomEvent" in walkfield) {
+                this.walkfield_customevent = {value: walkfield.CustomEvent, enabled: true};
+            }
+        }
+
+        if ("EveryTurn" in parsed) {
+            this.every_turn = true;
+            let every = parsed.EveryTurn;
+            if ("CurrentParameter" in every) {
+                every.CurrentParameter.forEach((data) => {
+                    this.everyturn_common_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("CurrentParameterTarget" in every) {
+                this.everyturn_common_target = every.CurrentParameterTarget;
+            }
+            if ("TemporaryParameter" in every) {
+                every.TemporaryParameter.forEach((data) => {
+                    this.everyturn_inbattle_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("TemporaryParameterTarget" in every) {
+                this.everyturn_inbattle_target = every.TemporaryParameterTarget;
+            }
+            if ("StatusAilment" in every) {
+                every.StatusAilment.forEach((data) => {
+                    this.everyturn_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                });
+            }
+            if ("AilmentTarget" in every) {
+                this.everyturn_ailment_target = every.AilmentTarget;
+            }
+            if ("CustomEvent" in every) {
+                this.everyturn_customevent = {value: every.CustomEvent, enabled: true};
+            }
+        }
+
+        if ("InAttack" in parsed) {
+            this.in_attack = true;
+            let every = parsed.InAttack;
+            if ("CurrentParameter" in every) {
+                every.CurrentParameter.forEach((data) => {
+                    this.inattack_common_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("CurrentParameterTarget" in every) {
+                this.inattack_common_target = every.CurrentParameterTarget;
+            }
+            if ("TemporaryParameter" in every) {
+                every.TemporaryParameter.forEach((data) => {
+                    this.inattack_inbattle_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("TemporaryParameterTarget" in every) {
+                this.inattack_inbattle_target = every.TemporaryParameterTarget;
+            }
+            if ("StatusAilment" in every) {
+                every.StatusAilment.forEach((data) => {
+                    this.inattack_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                });
+            }
+            if ("AilmentTarget" in every) {
+                this.inattack_inbattle_ailment_target = every.AilmentTarget;
+            }
+            if ("CustomEvent" in every) {
+                this.inattack_inbattle_customevent = {value: every.CustomEvent, enabled: true};
+            }
+        }
+
+        if ("InBeAttack" in parsed) {
+            this.in_be_attacked = true;
+            let every = parsed.InBeAttack;
+            if ("CurrentParameter" in every) {
+                every.CurrentParameter.forEach((data) => {
+                    this.inbeattack_common_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("CurrentParameterTarget" in every) {
+                this.inbeattack_common_target = every.CurrentParameterTarget;
+            }
+            if ("TemporaryParameter" in every) {
+                every.TemporaryParameter.forEach((data) => {
+                    this.inbeattack_inbattle_params[data.Name] = {value: data.Value, enabled: true};
+                });
+            }
+            if ("TemporaryParameterTarget" in every) {
+                this.inbeattack_inbattle_target = every.TemporaryParameterTarget;
+            }
+            if ("StatusAilment" in every) {
+                every.StatusAilment.forEach((data) => {
+                    this.inbeattack_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                });
+            }
+            if ("AilmentTarget" in every) {
+                this.inbeattack_ailment_target = every.AilmentTarget;
+            }
+            if ("CustomEvent" in every) {
+                this.inbeattack_inbattle_customevent = {value: every.CustomEvent, enabled: true};
             }
         }
         console.log(parsed);
