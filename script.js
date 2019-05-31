@@ -740,7 +740,7 @@ new Vue({
             }
         },
         calcElementNum: function () {
-            return Math.ceil((window.innerHeight-64) / this.card_height)+4;
+            return Math.ceil((window.innerHeight-64) / this.card_height)+2;
         },
         updateScrollParam: function (e) {
             this.scroll_top = e.target.scrollingElement.scrollTop;
@@ -753,8 +753,8 @@ new Vue({
     computed: {
         listStyle: function () {
             let top_offset = this.scroll_top;
-            if (this.scroll_top > this.card_height*2) {
-                top_offset -= this.card_height*2;
+            if (this.scroll_top > this.card_height) {
+                top_offset -= this.card_height;
             }
             top_offset -= (this.scroll_top % this.card_height);
             return {
