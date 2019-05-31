@@ -571,7 +571,6 @@ class Item {
                 this.inbeattack_inbattle_customevent = {value: every.CustomEvent, enabled: true};
             }
         }
-        console.log(parsed);
     }
 
     GenerateRow() {
@@ -639,7 +638,6 @@ new Vue({
         addItem: function () {
             let new_item = new Item();
             let found = false;
-            console.log(this.items.length);
             for (let i = 0; i < this.items.length; i++) {
                 if (this.items[i].id !== i) {
                     new_item.id = i;
@@ -666,10 +664,7 @@ new Vue({
         },
         generateCSV: function () {
             let rows = [];
-            this.items.forEach((item) => {
-                rows.push(item.GenerateRow());
-            });
-            console.log(JSON.stringify(rows));
+            this.items.forEach((item) => rows.push(item.GenerateRow()));
             return JSON.stringify(rows);
         },
         exportCSV: function () {
@@ -700,7 +695,7 @@ new Vue({
         },
         importData: function (data) {
             this.items = [];
-            data.forEach((row, index) => {
+            data.forEach((row) => {
                 let item = new Item();
                 item.id = parseInt(row.Name);
                 item.name = row.itemName;

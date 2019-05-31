@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns="http://www.w3.org/1999/html" xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>ItemTableCreator</title>
@@ -7,13 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <v-app id="app">
-    <v-toolbar color="black" dark>
+    <v-toolbar color="black" dark app>
         <v-toolbar-title>ItemTableCreator</v-toolbar-title>
         <v-btn v-if="mode === 'list'" depressed color="error" @click="exportCSV">エクスポート</v-btn>
         <v-btn v-if="mode === 'list'" depressed color="primary" @click="clickImport">インポート</v-btn>
@@ -22,574 +22,593 @@
         <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">アイテム追加</v-btn>
         <v-btn v-if="mode === 'edit'" depressed @click="toList">戻る</v-btn>
     </v-toolbar>
-    <div v-show="mode === 'list'">
-        <v-layout justify-center>
-            <v-flex xs11>
-                <v-card>
-                    <v-list>
-                        <template v-for="(item, index) in items">
-                            <v-container>
-                                <v-layout align-center justify-space-around row wrap>
-                                    <v-flex xs3 sm2 md1>
-                                        <v-text-field label="id" v-model="item.id" type="number"
-                                                      readonly></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs4 sm2 md2>
-                                        <v-text-field label="アイテム名" v-model="item.name"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs4 sm2 md2>
-                                        <v-combobox :items="item_categories" label="カテゴリ"
-                                                    v-model="item.category"></v-combobox>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md2>
-                                        <v-combobox :items="item_attribute" label="属性"
-                                                    v-model="item.attribute"></v-combobox>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md2>
-                                        <v-checkbox label="フィールドで使用可能" v-model="item.can_use_in_field"></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md2>
-                                        <v-checkbox label="戦闘中に使用可能" v-model="item.can_use_in_battle"></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md6>
-                                        <v-text-field label="説明"
-                                                      v-model="item.description"></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md1>
-                                        <v-checkbox label="装備品" v-model="item.is_equipment"></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md1>
-                                        <v-checkbox label="売却可能" v-model="item.can_selling"></v-checkbox>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md1>
-                                        <v-text-field label="買い相場" v-model="item.buying_price" type="number"
-                                        ></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md1>
-                                        <v-text-field :disabled="! item.can_selling" label="売り相場"
-                                                      v-model="item.selling_price" type="number"
-                                        ></v-text-field>
-                                    </v-flex>
-                                    <v-flex xs3 sm2 md2>
-                                        <v-btn depressed color="" @click="toEditItem(index)">効果編集</v-btn>
-                                        <v-btn depressed color="error" @click="removeItem(index)">削除</v-btn>
-                                    </v-flex>
-                                </v-layout>
+    <div id="item-list">
+        <div v-show="mode === 'list'">
+            <v-layout justify-center>
+                <v-flex xs11>
+                    <v-card>
+                        <v-list>
+                            <template v-for="(item, index) in items">
+                                <v-container>
+                                    <v-layout align-center justify-space-around row wrap>
+                                        <v-flex xs3 sm2 md1>
+                                            <v-text-field label="id" v-model="item.id" type="number"
+                                                          readonly></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs4 sm2 md2>
+                                            <v-text-field label="アイテム名" v-model="item.name"></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs4 sm2 md2>
+                                            <v-combobox :items="item_categories" label="カテゴリ"
+                                                        v-model="item.category"></v-combobox>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md2>
+                                            <v-combobox :items="item_attribute" label="属性"
+                                                        v-model="item.attribute"></v-combobox>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md2>
+                                            <v-checkbox label="フィールドで使用可能" v-model="item.can_use_in_field"></v-checkbox>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md2>
+                                            <v-checkbox label="戦闘中に使用可能" v-model="item.can_use_in_battle"></v-checkbox>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md6>
+                                            <v-text-field label="説明"
+                                                          v-model="item.description"></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md1>
+                                            <v-checkbox label="装備品" v-model="item.is_equipment"></v-checkbox>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md1>
+                                            <v-checkbox label="売却可能" v-model="item.can_selling"></v-checkbox>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md1>
+                                            <v-text-field label="買い相場" v-model="item.buying_price" type="number"
+                                            ></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md1>
+                                            <v-text-field :disabled="! item.can_selling" label="売り相場"
+                                                          v-model="item.selling_price" type="number"
+                                            ></v-text-field>
+                                        </v-flex>
+                                        <v-flex xs3 sm2 md2>
+                                            <v-btn depressed color="" @click="toEditItem(index)">効果編集</v-btn>
+                                            <v-btn depressed color="error" @click="removeItem(index)">削除</v-btn>
+                                        </v-flex>
+                                    </v-layout>
 
-                            </v-container>
-                            <v-divider v-if="items.length > index+1"></v-divider>
-                        </template>
-                    </v-list>
-                </v-card>
-            </v-flex>
-        </v-layout>
-    </div>
-    <div v-show="mode === 'edit'">
-        <v-layout justify-space-between row wrap>
-            <v-container>
-                <v-layout justify-space-around wrap>
-                    <v-flex xs11 sm5 md5>
-                        <v-card>
-                            <v-container>
-                                <v-checkbox v-model="item.normal_use" label="通常使用時効果"></v-checkbox>
-                                <v-layout v-show="item.normal_use" justify-space-around column wrap>
-                                    <div class="font-weight-bold subheading">共通</div>
-                                    <div>現在値効果</div>
-                                    <v-layout align-center justify-space-between wrap>
-                                        <v-flex v-for="(name, index) in item.current_param_categories" xs12 sm12 md5>
-                                            <v-layout>
-                                                <v-checkbox
-                                                        v-model="item.normal_common_params[name].enabled"></v-checkbox>
-                                                <v-text-field :disabled="!item.normal_common_params[name].enabled"
-                                                              :label="item.current_param_category_labels[index]"
-                                                              type="number"
-                                                              v-model.number="item.normal_common_params[name].value"></v-text-field>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.normal_common_params)"
-                                                            :items="infield_targets"
-                                                            v-model="item.normal_common_target"
-                                                            label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div class="font-weight-bold subheading">フィールド</div>
-                                    <div>永続パラメータ効果</div>
-                                    <v-layout wrap>
-                                        <v-layout v-for="(name, index) in item.absolute_param_categories">
-                                            <v-checkbox v-model="item.normal_infield_params[name].enabled"></v-checkbox>
-                                            <v-text-field :disabled="!item.normal_infield_params[name].enabled"
-                                                          :label="item.absolute_param_category_labels[index]"
-                                                          type="number"
-                                                          v-model.number="item.normal_infield_params[name].value"></v-text-field>
-                                        </v-layout>
-                                    </v-layout>
-                                    <v-flex xs12>
-                                        <v-layout>
-                                            <v-combobox :disabled="!item.checkUsing(item.normal_infield_params)"
-                                                        :items="infield_targets"
-                                                        v-model="item.normal_infield_target"
-                                                        label="適用範囲">
-                                            </v-combobox>
-                                        </v-layout>
-                                    </v-flex>
-                                    <div>カスタムイベント</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-checkbox v-model="item.normal_infield_customevent.enabled"></v-checkbox>
-                                        <v-text-field :disabled="!item.normal_infield_customevent.enabled"
-                                                      label="イベントID"
-                                                      type="number"
-                                                      v-model.number="item.normal_infield_customevent.value"></v-text-field>
-                                    </v-layout>
-                                    <v-layout align-start justify-start column>
-                                        <v-flex>
-                                            <div class="font-weight-bold subheading">戦闘中</div>
-                                        </v-flex>
-                                        <v-flex>
-                                            <div>一時パラメータ効果</div>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-layout v-for="(name, index) in item.absolute_param_categories">
-                                            <v-checkbox
-                                                    v-model="item.normal_inbattle_params[name].enabled"></v-checkbox>
-                                            <v-text-field :disabled="!item.normal_inbattle_params[name].enabled"
-                                                          :label="item.absolute_param_category_labels[index]"
-                                                          type="number"
-                                                          v-model.number="item.normal_inbattle_params[name].value"></v-text-field>
-                                        </v-layout>
-                                    </v-layout>
-                                    <div>状態異常効果</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout v-for="(name, index) in item.ailment_param_categories">
-                                                <v-checkbox v-model="item.normal_ailment_params[name].enabled"
-                                                            :label="item.ailment_param_category_labels[index]"></v-checkbox>
-                                                <v-combobox :disabled="!item.normal_ailment_params[name].enabled"
-                                                            v-model="item.normal_ailment_params[name].action"
-                                                            :items="inbattle_ailment_types"
-                                                            label="効果"></v-combobox>
-                                                <v-text-field :disabled="!item.normal_ailment_params[name].enabled"
-                                                              label="確率"
-                                                              type="number"
-                                                              v-model.number="item.normal_ailment_params[name].probability"></v-text-field>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-combobox :disabled="!item.checkUsing(item.normal_ailment_params)"
-                                                        :items="inbattle_targets"
-                                                        v-model="item.normal_inbattle_target"
-                                                        label="適用範囲">
-                                            </v-combobox>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>カスタムイベント</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-checkbox v-model="item.normal_inbattle_customevent.enabled"></v-checkbox>
-                                        <v-text-field :disabled="!item.normal_inbattle_customevent.enabled"
-                                                      label="イベントID"
-                                                      type="number"
-                                                      v-model.number="item.normal_inbattle_customevent.value"></v-text-field>
-                                    </v-layout>
-                                </v-layout>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                    <v-flex xs11 sm5 md5 v-show="item.is_equipment">
-                        <v-card>
-                            <v-container>
-                                <v-checkbox
-                                        v-model="item.equipment"
-                                        label="通常装備時効果"
-                                ></v-checkbox>
-
-                                <v-layout v-show="item.equipment" justify-space-around column wrap>
-                                    <div>装備情報</div>
-                                    <v-flex xs12 sm12 md12>
-                                        <v-combobox :items="equipment_categories"
-                                                    v-model="item.equipment_category"
-                                                    label="カテゴリ">
-                                        </v-combobox>
-                                    </v-flex>
-                                    <div>パラメータ効果</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-layout v-for="(name, index) in item.absolute_param_categories">
-                                            <v-checkbox v-model="item.equipment_params[name].enabled"></v-checkbox>
-                                            <v-text-field :disabled="!item.equipment_params[name].enabled"
-                                                          :label="item.absolute_param_category_labels[index]"
-                                                          type="number"
-                                                          v-model.number="item.equipment_params[name].value"></v-text-field>
-                                        </v-layout>
-                                    </v-layout>
-                                </v-layout>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-            <v-container>
-                <v-layout justify-space-around wrap>
-                    <v-flex xs11 sm5 md5 v-show="item.is_equipment">
-                        <v-card>
-                            <v-container>
-                                <v-checkbox
-                                        v-model="item.every_turn"
-                                        label="ターン毎効果(装備利用)"
-                                ></v-checkbox>
-                                <v-layout v-show="item.every_turn" justify-space-around column wrap>
-                                    <v-flex xs12 sm6 md3>
+                                </v-container>
+                                <v-divider v-if="items.length > index+1"></v-divider>
+                            </template>
+                        </v-list>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </div>
+        <div v-show="mode === 'edit'">
+            <v-layout justify-space-between row wrap>
+                <v-container>
+                    <v-layout justify-space-around wrap>
+                        <v-flex xs11 sm5 md5>
+                            <v-card>
+                                <v-container>
+                                    <v-checkbox v-model="item.normal_use" label="通常使用時効果"></v-checkbox>
+                                    <v-layout v-show="item.normal_use" justify-space-around column wrap>
                                         <div class="font-weight-bold subheading">共通</div>
                                         <div>現在値効果</div>
-                                        <v-layout>
-                                            <v-layout align-center justify-space-between wrap>
-                                                <v-flex xs12 sm12 md5
-                                                        v-for="(name, index) in item.current_param_categories">
-                                                    <v-layout>
-                                                        <v-checkbox
-                                                                v-model="item.everyturn_common_params[name].enabled"></v-checkbox>
-                                                        <v-text-field
-                                                                :disabled="!item.everyturn_common_params[name].enabled"
-                                                                :label="item.current_param_category_labels[index]"
-                                                                type="number"
-                                                                v-model.number="item.everyturn_common_params[name].value"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-layout>
-                                    </v-flex>
-                                    <v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.everyturn_common_params)"
-                                                            :items="inbattle_targets"
-                                                            v-model="item.everyturn_common_target"
-                                                            label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout align-start justify-start column>
-                                        <div class="font-weight-bold subheading">戦闘中</div>
-                                        <div>一時パラメータ効果</div>
-                                    </v-layout>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-layout v-for="(name, index) in item.absolute_param_categories">
-                                            <v-checkbox
-                                                    v-model="item.everyturn_inbattle_params[name].enabled"></v-checkbox>
-                                            <v-text-field :disabled="!item.everyturn_inbattle_params[name].enabled"
-                                                          label="HP" type="number"
-                                                          v-model.number="item.everyturn_inbattle_params[name].value"></v-text-field>
-                                        </v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.everyturn_inbattle_params)"
-                                                            :items="inbattle_targets"
-                                                            v-model="item.everyturn_inbattle_target"
-                                                            label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>状態異常効果</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-flex xs12 sm12 md12 v-for="(name, index) in item.ailment_param_categories">
-                                            <v-layout>
-                                                <v-checkbox v-model="item.everyturn_ailment_params[name].enabled"
-                                                            :label="item.ailment_param_category_labels[index]"></v-checkbox>
-                                                <v-combobox :disabled="!item.everyturn_ailment_params[name].enabled"
-                                                            v-model="item.everyturn_ailment_params[name].action"
-                                                            :items="inbattle_ailment_types"
-                                                            label="効果"></v-combobox>
-                                                <v-text-field :disabled="!item.everyturn_ailment_params[name].enabled"
-                                                              label="確率"
-                                                              type="number"
-                                                              v-model.number="item.everyturn_ailment_params[name].probability"></v-text-field>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-combobox :disabled="!item.checkUsing(item.everyturn_ailment_params)"
-                                                        :items="inbattle_targets"
-                                                        v-model="item.everyturn_ailment_target"
-                                                        label="適用範囲">
-                                            </v-combobox>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>カスタムイベント</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-checkbox v-model="item.everyturn_customevent.enabled"></v-checkbox>
-                                        <v-text-field :disabled="!item.everyturn_customevent.enabled"
-                                                      label="イベントID"
-                                                      type="number"
-                                                      v-model.number="item.everyturn_customevent.value"></v-text-field>
-                                    </v-layout>
-                                </v-layout>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                    <v-flex xs11 sm5 md5 v-show="item.is_equipment">
-                        <v-card>
-                            <v-container>
-                                <v-checkbox
-                                        v-model="item.in_attack"
-                                        label="攻撃時効果(装備利用)"
-                                ></v-checkbox>
-                                <v-layout v-show="item.in_attack" justify-space-around column wrap>
-                                    <v-flex xs12 sm6 md3>
-                                        <div class="font-weight-bold subheading">共通</div>
-                                        <div>現在値効果</div>
-                                        <v-layout>
-                                            <v-layout align-center justify-space-between wrap>
-                                                <v-flex xs12 sm12 md5
-                                                        v-for="(name, index) in item.current_param_categories">
-                                                    <v-layout>
-                                                        <v-checkbox
-                                                                v-model="item.inattack_common_params[name].enabled"></v-checkbox>
-                                                        <v-text-field
-                                                                :disabled="!item.inattack_common_params[name].enabled"
-                                                                :label="item.current_param_category_labels[index]"
-                                                                type="number"
-                                                                v-model.number="item.inattack_common_params[name].value"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-layout>
-                                    </v-flex>
-                                    <v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.inattack_common_params)"
-                                                            :items="inbattle_targets"
-                                                            v-model="item.inattack_inbattle_target"
-                                                            label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout align-start justify-start column>
-                                        <div class="font-weight-bold subheading">戦闘中</div>
-                                        <div>一時パラメータ効果</div>
-                                    </v-layout>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-layout v-for="(name, index) in item.absolute_param_categories">
-                                            <v-checkbox
-                                                    v-model="item.inattack_inbattle_params[name].enabled"></v-checkbox>
-                                            <v-text-field :disabled="!item.inattack_inbattle_params[name].enabled"
-                                                          :label="item.absolute_param_category_labels[index]"
-                                                          type="number"
-                                                          v-model.number="item.inattack_inbattle_params[name].value"></v-text-field>
-                                        </v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.inattack_inbattle_params)"
-                                                            :items="inbattle_targets"
-                                                            v-model="item.inattack_inbattle_target"
-                                                            label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>状態異常効果</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-flex xs12 sm12 md12 v-for="(name, index) in item.ailment_param_categories">
-                                            <v-layout>
-                                                <v-checkbox v-model="item.inattack_ailment_params[name].enabled"
-                                                            :label="item.ailment_param_category_labels[index]"></v-checkbox>
-                                                <v-combobox :disabled="!item.inattack_ailment_params[name].enabled"
-                                                            v-model="item.inattack_ailment_params[name].action"
-                                                            :items="inbattle_ailment_types"
-                                                            label="効果"></v-combobox>
-                                                <v-text-field :disabled="!item.inattack_ailment_params[name].enabled"
-                                                              label="確率"
-                                                              type="number"
-                                                              v-model.number="item.inattack_ailment_params[name].probability"></v-text-field>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-combobox :disabled="!item.checkUsing(item.inattack_ailment_params)"
-                                                        :items="inbattle_targets"
-                                                        v-model="item.inattack_inbattle_ailment_target"
-                                                        label="適用範囲">
-                                            </v-combobox>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>カスタムイベント</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-checkbox v-model="item.inattack_inbattle_customevent.enabled"></v-checkbox>
-                                        <v-text-field :disabled="!item.inattack_inbattle_customevent.enabled"
-                                                      label="イベントid"
-                                                      type="number"
-                                                      v-model.number="item.inattack_inbattle_customevent.value"></v-text-field>
-                                    </v-layout>
-                                </v-layout>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-            <v-container>
-                <v-layout justify-space-around wrap>
-                    <v-flex xs11 sm5 md5 v-show="item.is_equipment">
-                        <v-card>
-                            <v-container>
-                                <v-checkbox
-                                        v-model="item.in_be_attacked"
-                                        label="被攻撃時効果(装備利用)"
-                                ></v-checkbox>
-                                <v-layout v-show="item.in_be_attacked" justify-space-around column wrap>
-                                    <v-flex xs12 sm6 md3>
-                                        <div class="font-weight-bold subheading">共通</div>
-                                        <div>現在値効果</div>
-                                        <v-layout>
-                                            <v-layout align-center justify-space-between wrap>
-                                                <v-flex xs12 sm12 md5
-                                                        v-for="(name, index) in item.current_param_categories">
-                                                    <v-layout>
-                                                        <v-checkbox
-                                                                v-model="item.inbeattack_common_params[name].enabled"></v-checkbox>
-                                                        <v-text-field
-                                                                :disabled="!item.inbeattack_common_params[name].enabled"
-                                                                :label="item.current_param_category_labels[index]"
-                                                                type="number"
-                                                                v-model.number="item.inbeattack_common_params[name].value"></v-text-field>
-                                                    </v-layout>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-layout>
-                                    </v-flex>
-                                    <v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.inbeattack_common_params)"
-                                                            :items="inbattle_targets"
-                                                            v-model="item.inbeattack_inbattle_target"
-                                                            label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout align-start justify-start column>
-                                        <div class="font-weight-bold subheading">戦闘中</div>
-                                        <div>一時パラメータ効果</div>
-                                    </v-layout>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-layout v-for="(name, index) in item.absolute_param_categories">
-                                            <v-checkbox
-                                                    v-model="item.inbeattack_inbattle_params[name].enabled"></v-checkbox>
-                                            <v-text-field :disabled="!item.inbeattack_inbattle_params[name].enabled"
-                                                          :label="item.absolute_param_category_labels[index]"
-                                                          type="number"
-                                                          v-model.number="item.inbeattack_inbattle_params[name].value"></v-text-field>
-                                        </v-layout>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-layout>
-                                                <v-combobox
-                                                        :disabled="!item.checkUsing(item.inbeattack_inbattle_params)"
-                                                        :items="inbattle_targets"
-                                                        v-model="item.inbeattack_inbattle_target"
-                                                        label="適用範囲">
-                                                </v-combobox>
-                                            </v-layout>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>状態異常効果</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-flex xs12 sm12 md12 v-for="(name, index) in item.ailment_param_categories">
-                                            <v-layout>
-                                                <v-checkbox v-model="item.inbeattack_ailment_params[name].enabled"
-                                                            :label="item.ailment_param_category_labels[index]"></v-checkbox>
-                                                <v-combobox :disabled="!item.inbeattack_ailment_params[name].enabled"
-                                                            v-model="item.inbeattack_ailment_params[name].action"
-                                                            :items="inbattle_ailment_types"
-                                                            label="効果"></v-combobox>
-                                                <v-text-field :disabled="!item.inbeattack_ailment_params[name].enabled"
-                                                              label="確率"
-                                                              type="number"
-                                                              v-model.number="item.inbeattack_ailment_params[name].probability"></v-text-field>
-                                            </v-layout>
-                                        </v-flex>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-combobox :disabled="!item.checkUsing(item.inbeattack_ailment_params)"
-                                                        :items="inbattle_targets"
-                                                        v-model="item.inbeattack_ailment_target"
-                                                        label="適用範囲">
-                                            </v-combobox>
-                                        </v-flex>
-                                    </v-layout>
-                                    <div>カスタムイベント</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-checkbox v-model="item.inbeattack_inbattle_customevent.enabled"></v-checkbox>
-                                        <v-text-field :disabled="!item.inbeattack_inbattle_customevent.enabled"
-                                                      label="イベントid"
-                                                      type="number"
-                                                      v-model.number="item.inbeattack_inbattle_customevent.value"></v-text-field>
-                                    </v-layout>
-                                </v-layout>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                    <v-flex xs11 sm5 md5 v-show="item.is_equipment">
-                        <v-card>
-                            <v-container>
-                                <v-checkbox v-model="item.walk_field" label="フィールド移動時効果(装備利用)"></v-checkbox>
-                                <v-layout v-show="item.walk_field" justify-space-around column wrap>
-                                    <div class="font-weight-bold subheading">共通</div>
-                                    <div>現在値効果</div>
-                                    <v-layout>
                                         <v-layout align-center justify-space-between wrap>
-                                            <v-flex xs12 sm12 md5
-                                                    v-for="(name, index) in item.current_param_categories">
+                                            <v-flex v-for="(name, index) in item.current_param_categories" xs12 sm12
+                                                    md5>
                                                 <v-layout>
                                                     <v-checkbox
-                                                            v-model="item.walkfield_common_params[name].enabled"></v-checkbox>
-                                                    <v-text-field
-                                                            :disabled="!item.walkfield_common_params[name].enabled"
-                                                            :label="item.current_param_category_labels[index]"
-                                                            type="number"
-                                                            v-model.number="item.walkfield_common_params[name].value"></v-text-field>
+                                                            v-model="item.normal_common_params[name].enabled"></v-checkbox>
+                                                    <v-text-field :disabled="!item.normal_common_params[name].enabled"
+                                                                  :label="item.current_param_category_labels[index]"
+                                                                  type="number"
+                                                                  v-model.number="item.normal_common_params[name].value"></v-text-field>
                                                 </v-layout>
                                             </v-flex>
                                         </v-layout>
-                                    </v-layout>
-                                    <v-layout>
-                                        <v-flex xs12 sm12 md12>
+                                        <v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox :disabled="!item.checkUsing(item.normal_common_params)"
+                                                                :items="infield_targets"
+                                                                v-model="item.normal_common_target"
+                                                                label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div class="font-weight-bold subheading">フィールド</div>
+                                        <div>永続パラメータ効果</div>
+                                        <v-layout wrap>
+                                            <v-layout v-for="(name, index) in item.absolute_param_categories">
+                                                <v-checkbox
+                                                        v-model="item.normal_infield_params[name].enabled"></v-checkbox>
+                                                <v-text-field :disabled="!item.normal_infield_params[name].enabled"
+                                                              :label="item.absolute_param_category_labels[index]"
+                                                              type="number"
+                                                              v-model.number="item.normal_infield_params[name].value"></v-text-field>
+                                            </v-layout>
+                                        </v-layout>
+                                        <v-flex xs12>
                                             <v-layout>
-                                                <v-combobox :disabled="!item.checkUsing(item.walkfield_common_params)"
+                                                <v-combobox :disabled="!item.checkUsing(item.normal_infield_params)"
                                                             :items="infield_targets"
-                                                            v-model="item.walkfield_common_target"
+                                                            v-model="item.normal_infield_target"
                                                             label="適用範囲">
                                                 </v-combobox>
                                             </v-layout>
                                         </v-flex>
+                                        <div>カスタムイベント</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-checkbox v-model="item.normal_infield_customevent.enabled"></v-checkbox>
+                                            <v-text-field :disabled="!item.normal_infield_customevent.enabled"
+                                                          label="イベントID"
+                                                          type="number"
+                                                          v-model.number="item.normal_infield_customevent.value"></v-text-field>
+                                        </v-layout>
+                                        <v-layout align-start justify-start column>
+                                            <v-flex>
+                                                <div class="font-weight-bold subheading">戦闘中</div>
+                                            </v-flex>
+                                            <v-flex>
+                                                <div>一時パラメータ効果</div>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-layout v-for="(name, index) in item.absolute_param_categories">
+                                                <v-checkbox
+                                                        v-model="item.normal_inbattle_params[name].enabled"></v-checkbox>
+                                                <v-text-field :disabled="!item.normal_inbattle_params[name].enabled"
+                                                              :label="item.absolute_param_category_labels[index]"
+                                                              type="number"
+                                                              v-model.number="item.normal_inbattle_params[name].value"></v-text-field>
+                                            </v-layout>
+                                        </v-layout>
+                                        <div>状態異常効果</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout v-for="(name, index) in item.ailment_param_categories">
+                                                    <v-checkbox v-model="item.normal_ailment_params[name].enabled"
+                                                                :label="item.ailment_param_category_labels[index]"></v-checkbox>
+                                                    <v-combobox :disabled="!item.normal_ailment_params[name].enabled"
+                                                                v-model="item.normal_ailment_params[name].action"
+                                                                :items="inbattle_ailment_types"
+                                                                label="効果"></v-combobox>
+                                                    <v-text-field :disabled="!item.normal_ailment_params[name].enabled"
+                                                                  label="確率"
+                                                                  type="number"
+                                                                  v-model.number="item.normal_ailment_params[name].probability"></v-text-field>
+                                                </v-layout>
+                                            </v-flex>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-combobox :disabled="!item.checkUsing(item.normal_ailment_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.normal_inbattle_target"
+                                                            label="適用範囲">
+                                                </v-combobox>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>カスタムイベント</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-checkbox v-model="item.normal_inbattle_customevent.enabled"></v-checkbox>
+                                            <v-text-field :disabled="!item.normal_inbattle_customevent.enabled"
+                                                          label="イベントID"
+                                                          type="number"
+                                                          v-model.number="item.normal_inbattle_customevent.value"></v-text-field>
+                                        </v-layout>
                                     </v-layout>
-                                    <v-layout>
-                                        <v-flex xs12 sm12 md12 align-self-center>
-                                            <hr>
-                                            <hr>
-                                            <div>装備特殊効果が入る予定</div>
-                                            <hr>
-                                            <hr>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                        <v-flex xs11 sm5 md5 v-show="item.is_equipment">
+                            <v-card>
+                                <v-container>
+                                    <v-checkbox
+                                            v-model="item.equipment"
+                                            label="通常装備時効果"
+                                    ></v-checkbox>
+
+                                    <v-layout v-show="item.equipment" justify-space-around column wrap>
+                                        <div>装備情報</div>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-combobox :items="equipment_categories"
+                                                        v-model="item.equipment_category"
+                                                        label="カテゴリ">
+                                            </v-combobox>
                                         </v-flex>
+                                        <div>パラメータ効果</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-layout v-for="(name, index) in item.absolute_param_categories">
+                                                <v-checkbox v-model="item.equipment_params[name].enabled"></v-checkbox>
+                                                <v-text-field :disabled="!item.equipment_params[name].enabled"
+                                                              :label="item.absolute_param_category_labels[index]"
+                                                              type="number"
+                                                              v-model.number="item.equipment_params[name].value"></v-text-field>
+                                            </v-layout>
+                                        </v-layout>
                                     </v-layout>
-                                    <div>カスタムイベント</div>
-                                    <v-layout align-content-space-between justify-space-between wrap>
-                                        <v-checkbox v-model="item.walkfield_customevent.enabled"></v-checkbox>
-                                        <v-text-field :disabled="!item.walkfield_customevent.enabled"
-                                                      label="イベントID"
-                                                      type="number"
-                                                      v-model.number="item.walkfield_customevent.value"></v-text-field>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+                <v-container>
+                    <v-layout justify-space-around wrap>
+                        <v-flex xs11 sm5 md5 v-show="item.is_equipment">
+                            <v-card>
+                                <v-container>
+                                    <v-checkbox
+                                            v-model="item.every_turn"
+                                            label="ターン毎効果(装備利用)"
+                                    ></v-checkbox>
+                                    <v-layout v-show="item.every_turn" justify-space-around column wrap>
+                                        <v-flex xs12 sm6 md3>
+                                            <div class="font-weight-bold subheading">共通</div>
+                                            <div>現在値効果</div>
+                                            <v-layout>
+                                                <v-layout align-center justify-space-between wrap>
+                                                    <v-flex xs12 sm12 md5
+                                                            v-for="(name, index) in item.current_param_categories">
+                                                        <v-layout>
+                                                            <v-checkbox
+                                                                    v-model="item.everyturn_common_params[name].enabled"></v-checkbox>
+                                                            <v-text-field
+                                                                    :disabled="!item.everyturn_common_params[name].enabled"
+                                                                    :label="item.current_param_category_labels[index]"
+                                                                    type="number"
+                                                                    v-model.number="item.everyturn_common_params[name].value"></v-text-field>
+                                                        </v-layout>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.everyturn_common_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.everyturn_common_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout align-start justify-start column>
+                                            <div class="font-weight-bold subheading">戦闘中</div>
+                                            <div>一時パラメータ効果</div>
+                                        </v-layout>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-layout v-for="(name, index) in item.absolute_param_categories">
+                                                <v-checkbox
+                                                        v-model="item.everyturn_inbattle_params[name].enabled"></v-checkbox>
+                                                <v-text-field :disabled="!item.everyturn_inbattle_params[name].enabled"
+                                                              label="HP" type="number"
+                                                              v-model.number="item.everyturn_inbattle_params[name].value"></v-text-field>
+                                            </v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.everyturn_inbattle_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.everyturn_inbattle_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>状態異常効果</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-flex xs12 sm12 md12
+                                                    v-for="(name, index) in item.ailment_param_categories">
+                                                <v-layout>
+                                                    <v-checkbox v-model="item.everyturn_ailment_params[name].enabled"
+                                                                :label="item.ailment_param_category_labels[index]"></v-checkbox>
+                                                    <v-combobox :disabled="!item.everyturn_ailment_params[name].enabled"
+                                                                v-model="item.everyturn_ailment_params[name].action"
+                                                                :items="inbattle_ailment_types"
+                                                                label="効果"></v-combobox>
+                                                    <v-text-field
+                                                            :disabled="!item.everyturn_ailment_params[name].enabled"
+                                                            label="確率"
+                                                            type="number"
+                                                            v-model.number="item.everyturn_ailment_params[name].probability"></v-text-field>
+                                                </v-layout>
+                                            </v-flex>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-combobox :disabled="!item.checkUsing(item.everyturn_ailment_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.everyturn_ailment_target"
+                                                            label="適用範囲">
+                                                </v-combobox>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>カスタムイベント</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-checkbox v-model="item.everyturn_customevent.enabled"></v-checkbox>
+                                            <v-text-field :disabled="!item.everyturn_customevent.enabled"
+                                                          label="イベントID"
+                                                          type="number"
+                                                          v-model.number="item.everyturn_customevent.value"></v-text-field>
+                                        </v-layout>
                                     </v-layout>
-                                </v-layout>
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-layout>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                        <v-flex xs11 sm5 md5 v-show="item.is_equipment">
+                            <v-card>
+                                <v-container>
+                                    <v-checkbox
+                                            v-model="item.in_attack"
+                                            label="攻撃時効果(装備利用)"
+                                    ></v-checkbox>
+                                    <v-layout v-show="item.in_attack" justify-space-around column wrap>
+                                        <v-flex xs12 sm6 md3>
+                                            <div class="font-weight-bold subheading">共通</div>
+                                            <div>現在値効果</div>
+                                            <v-layout>
+                                                <v-layout align-center justify-space-between wrap>
+                                                    <v-flex xs12 sm12 md5
+                                                            v-for="(name, index) in item.current_param_categories">
+                                                        <v-layout>
+                                                            <v-checkbox
+                                                                    v-model="item.inattack_common_params[name].enabled"></v-checkbox>
+                                                            <v-text-field
+                                                                    :disabled="!item.inattack_common_params[name].enabled"
+                                                                    :label="item.current_param_category_labels[index]"
+                                                                    type="number"
+                                                                    v-model.number="item.inattack_common_params[name].value"></v-text-field>
+                                                        </v-layout>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.inattack_common_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.inattack_inbattle_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout align-start justify-start column>
+                                            <div class="font-weight-bold subheading">戦闘中</div>
+                                            <div>一時パラメータ効果</div>
+                                        </v-layout>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-layout v-for="(name, index) in item.absolute_param_categories">
+                                                <v-checkbox
+                                                        v-model="item.inattack_inbattle_params[name].enabled"></v-checkbox>
+                                                <v-text-field :disabled="!item.inattack_inbattle_params[name].enabled"
+                                                              :label="item.absolute_param_category_labels[index]"
+                                                              type="number"
+                                                              v-model.number="item.inattack_inbattle_params[name].value"></v-text-field>
+                                            </v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.inattack_inbattle_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.inattack_inbattle_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>状態異常効果</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-flex xs12 sm12 md12
+                                                    v-for="(name, index) in item.ailment_param_categories">
+                                                <v-layout>
+                                                    <v-checkbox v-model="item.inattack_ailment_params[name].enabled"
+                                                                :label="item.ailment_param_category_labels[index]"></v-checkbox>
+                                                    <v-combobox :disabled="!item.inattack_ailment_params[name].enabled"
+                                                                v-model="item.inattack_ailment_params[name].action"
+                                                                :items="inbattle_ailment_types"
+                                                                label="効果"></v-combobox>
+                                                    <v-text-field
+                                                            :disabled="!item.inattack_ailment_params[name].enabled"
+                                                            label="確率"
+                                                            type="number"
+                                                            v-model.number="item.inattack_ailment_params[name].probability"></v-text-field>
+                                                </v-layout>
+                                            </v-flex>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-combobox :disabled="!item.checkUsing(item.inattack_ailment_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.inattack_inbattle_ailment_target"
+                                                            label="適用範囲">
+                                                </v-combobox>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>カスタムイベント</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-checkbox
+                                                    v-model="item.inattack_inbattle_customevent.enabled"></v-checkbox>
+                                            <v-text-field :disabled="!item.inattack_inbattle_customevent.enabled"
+                                                          label="イベントid"
+                                                          type="number"
+                                                          v-model.number="item.inattack_inbattle_customevent.value"></v-text-field>
+                                        </v-layout>
+                                    </v-layout>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+                <v-container>
+                    <v-layout justify-space-around wrap>
+                        <v-flex xs11 sm5 md5 v-show="item.is_equipment">
+                            <v-card>
+                                <v-container>
+                                    <v-checkbox
+                                            v-model="item.in_be_attacked"
+                                            label="被攻撃時効果(装備利用)"
+                                    ></v-checkbox>
+                                    <v-layout v-show="item.in_be_attacked" justify-space-around column wrap>
+                                        <v-flex xs12 sm6 md3>
+                                            <div class="font-weight-bold subheading">共通</div>
+                                            <div>現在値効果</div>
+                                            <v-layout>
+                                                <v-layout align-center justify-space-between wrap>
+                                                    <v-flex xs12 sm12 md5
+                                                            v-for="(name, index) in item.current_param_categories">
+                                                        <v-layout>
+                                                            <v-checkbox
+                                                                    v-model="item.inbeattack_common_params[name].enabled"></v-checkbox>
+                                                            <v-text-field
+                                                                    :disabled="!item.inbeattack_common_params[name].enabled"
+                                                                    :label="item.current_param_category_labels[index]"
+                                                                    type="number"
+                                                                    v-model.number="item.inbeattack_common_params[name].value"></v-text-field>
+                                                        </v-layout>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-layout>
+                                        </v-flex>
+                                        <v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.inbeattack_common_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.inbeattack_inbattle_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout align-start justify-start column>
+                                            <div class="font-weight-bold subheading">戦闘中</div>
+                                            <div>一時パラメータ効果</div>
+                                        </v-layout>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-layout v-for="(name, index) in item.absolute_param_categories">
+                                                <v-checkbox
+                                                        v-model="item.inbeattack_inbattle_params[name].enabled"></v-checkbox>
+                                                <v-text-field :disabled="!item.inbeattack_inbattle_params[name].enabled"
+                                                              :label="item.absolute_param_category_labels[index]"
+                                                              type="number"
+                                                              v-model.number="item.inbeattack_inbattle_params[name].value"></v-text-field>
+                                            </v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.inbeattack_inbattle_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.inbeattack_inbattle_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>状態異常効果</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-flex xs12 sm12 md12
+                                                    v-for="(name, index) in item.ailment_param_categories">
+                                                <v-layout>
+                                                    <v-checkbox v-model="item.inbeattack_ailment_params[name].enabled"
+                                                                :label="item.ailment_param_category_labels[index]"></v-checkbox>
+                                                    <v-combobox
+                                                            :disabled="!item.inbeattack_ailment_params[name].enabled"
+                                                            v-model="item.inbeattack_ailment_params[name].action"
+                                                            :items="inbattle_ailment_types"
+                                                            label="効果"></v-combobox>
+                                                    <v-text-field
+                                                            :disabled="!item.inbeattack_ailment_params[name].enabled"
+                                                            label="確率"
+                                                            type="number"
+                                                            v-model.number="item.inbeattack_ailment_params[name].probability"></v-text-field>
+                                                </v-layout>
+                                            </v-flex>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-combobox :disabled="!item.checkUsing(item.inbeattack_ailment_params)"
+                                                            :items="inbattle_targets"
+                                                            v-model="item.inbeattack_ailment_target"
+                                                            label="適用範囲">
+                                                </v-combobox>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>カスタムイベント</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-checkbox
+                                                    v-model="item.inbeattack_inbattle_customevent.enabled"></v-checkbox>
+                                            <v-text-field :disabled="!item.inbeattack_inbattle_customevent.enabled"
+                                                          label="イベントid"
+                                                          type="number"
+                                                          v-model.number="item.inbeattack_inbattle_customevent.value"></v-text-field>
+                                        </v-layout>
+                                    </v-layout>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                        <v-flex xs11 sm5 md5 v-show="item.is_equipment">
+                            <v-card>
+                                <v-container>
+                                    <v-checkbox v-model="item.walk_field" label="フィールド移動時効果(装備利用)"></v-checkbox>
+                                    <v-layout v-show="item.walk_field" justify-space-around column wrap>
+                                        <div class="font-weight-bold subheading">共通</div>
+                                        <div>現在値効果</div>
+                                        <v-layout>
+                                            <v-layout align-center justify-space-between wrap>
+                                                <v-flex xs12 sm12 md5
+                                                        v-for="(name, index) in item.current_param_categories">
+                                                    <v-layout>
+                                                        <v-checkbox
+                                                                v-model="item.walkfield_common_params[name].enabled"></v-checkbox>
+                                                        <v-text-field
+                                                                :disabled="!item.walkfield_common_params[name].enabled"
+                                                                :label="item.current_param_category_labels[index]"
+                                                                type="number"
+                                                                v-model.number="item.walkfield_common_params[name].value"></v-text-field>
+                                                    </v-layout>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-layout>
+                                        <v-layout>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-layout>
+                                                    <v-combobox
+                                                            :disabled="!item.checkUsing(item.walkfield_common_params)"
+                                                            :items="infield_targets"
+                                                            v-model="item.walkfield_common_target"
+                                                            label="適用範囲">
+                                                    </v-combobox>
+                                                </v-layout>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-layout>
+                                            <v-flex xs12 sm12 md12 align-self-center>
+                                                <hr>
+                                                <hr>
+                                                <div>装備特殊効果が入る予定</div>
+                                                <hr>
+                                                <hr>
+                                            </v-flex>
+                                        </v-layout>
+                                        <div>カスタムイベント</div>
+                                        <v-layout align-content-space-between justify-space-between wrap>
+                                            <v-checkbox v-model="item.walkfield_customevent.enabled"></v-checkbox>
+                                            <v-text-field :disabled="!item.walkfield_customevent.enabled"
+                                                          label="イベントID"
+                                                          type="number"
+                                                          v-model.number="item.walkfield_customevent.value"></v-text-field>
+                                        </v-layout>
+                                    </v-layout>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-layout>
+        </div>
     </div>
 </v-app>
 <script src="script.js"></script>
