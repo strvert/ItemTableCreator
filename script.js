@@ -615,9 +615,13 @@ new Vue({
     data: {
         mode: "list",
         items: [],
+        display_items: [],
         item: null,
         export_dialog: false,
         csv_data: "",
+        card_height: 0,
+        scroll_top: 0,
+        start_index: 0,
 
         item_attribute: ['None', 'Void', 'Earth', 'Water', 'Lightning', 'Wind', 'Ice', 'Flame'],
         item_categories: ['Weapon', 'Armor', 'Food', 'UseItem', 'Valuables', 'Other'],
@@ -626,6 +630,9 @@ new Vue({
         inbattle_ailment_types: ['Give', 'Clear'],
         probabilities: ['Absolutely', 'Probably', 'Maybe', 'Possibly'],
         equipment_categories: ['Head', 'Body', 'Shield', 'Accessory'],
+    },
+    mounted: function () {
+        window.addEventListener('resize', this.handleResize);
     },
     created: function () {
         this.addItem();
@@ -650,10 +657,13 @@ new Vue({
             }
             this.items.push(new_item);
             this.items.sort(this.itemCompare);
+            console.log(this.items.length);
+            this.recomputeDisplayCards();
         }
         ,
-        removeItem: function (index) {
-            this.items.splice(index, 1);
+        removeItem: function (item_id) {
+            this.items = this.items.filter((item) => {return item.id !== item_id});
+            this.recomputeDisplayCards();
         },
         toEditItem: function (index) {
             this.item = this.items[index];
@@ -677,7 +687,6 @@ new Vue({
             a.click();
         },
         copyCSV: function () {
-
         },
         clickImport: function () {
             this.$refs.import.click();
@@ -712,8 +721,48 @@ new Vue({
                 this.items.push(item);
             });
             this.items.sort(this.itemCompare);
+            this.recomputeDisplayCards();
+        },
+        handleResize: function () {
+            console.log(this.calcElementNum());
+            this.recomputeDisplayCards();
+        },
+        recomputeDisplayCards: function () {
+            this.card_height = this.getElementHeight();
+            this.display_items = this.items.slice(this.start_index, this.start_index+this.calcElementNum());
+            console.log(this.card_height);
+        },
+        getElementHeight: function () {
+            if (this.$refs.element === undefined) {
+                return 1;
+            } else {
+                return this.$refs.element[0].clientHeight;
+            }
+        },
+        calcElementNum: function () {
+            return Math.ceil((window.innerHeight-64) / this.card_height)+4;
+        },
+        updateScrollParam: function (e) {
+            this.scroll_top = e.target.scrollingElement.scrollTop;
+            this.start_index = parseInt(this.scroll_top/this.card_height, 10);
+            console.log(this.start_index);
+            this.display_items = this.items.slice(this.start_index, this.start_index+this.calcElementNum());
+            this.recomputeDisplayCards();
         }
     },
-    computed: {}
+    computed: {
+        listStyle: function () {
+            let top_offset = this.scroll_top;
+            if (this.scroll_top > this.card_height*2) {
+                top_offset -= this.card_height*2;
+            }
+            top_offset -= (this.scroll_top % this.card_height);
+            return {
+                "overflow": "auto",
+                "padding-top": top_offset + 'px',
+                'padding-bottom': (this.card_height * (this.items.length - this.calcElementNum()))-top_offset+50 + 'px'
+            }
+        }
+    }
 });
 

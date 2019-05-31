@@ -22,13 +22,13 @@
         <v-btn v-if="mode === 'list'" depressed color="primary" @click="addItem">アイテム追加</v-btn>
         <v-btn v-if="mode === 'edit'" depressed @click="toList">戻る</v-btn>
     </v-toolbar>
-    <div id="item-list">
-        <div v-show="mode === 'list'">
+    <div id="main">
+        <div id="item-list" :style="listStyle" v-scroll="updateScrollParam" v-show="mode === 'list'">
             <v-layout justify-center>
                 <v-flex xs11>
                     <v-card>
                         <v-list>
-                            <template v-for="(item, index) in items">
+                            <div ref="element" v-for="(item, index) in display_items">
                                 <v-container>
                                     <v-layout align-center justify-space-around row wrap>
                                         <v-flex xs3 sm2 md1>
@@ -73,13 +73,13 @@
                                         </v-flex>
                                         <v-flex xs3 sm2 md2>
                                             <v-btn depressed color="" @click="toEditItem(index)">効果編集</v-btn>
-                                            <v-btn depressed color="error" @click="removeItem(index)">削除</v-btn>
+                                            <v-btn depressed color="error" @click="removeItem(item.id)">削除</v-btn>
                                         </v-flex>
                                     </v-layout>
 
                                 </v-container>
-                                <v-divider v-if="items.length > index+1"></v-divider>
-                            </template>
+                                <v-divider v-if="display_items.length > index+1"></v-divider>
+                            </div>
                         </v-list>
                     </v-card>
                 </v-flex>
