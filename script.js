@@ -435,7 +435,11 @@ class Item {
                 if ("StatusAilment" in inbattle) {
                     let ailment = inbattle.StatusAilment;
                     ailment.forEach((data) => {
-                        this.normal_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                        this.normal_ailment_params[data.Name] = {
+                            action: data.Action,
+                            probability: data.Probability,
+                            enabled: true
+                        };
                     });
                 }
                 if ("Target" in inbattle) {
@@ -497,7 +501,11 @@ class Item {
             }
             if ("StatusAilment" in every) {
                 every.StatusAilment.forEach((data) => {
-                    this.everyturn_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                    this.everyturn_ailment_params[data.Name] = {
+                        action: data.Action,
+                        probability: data.Probability,
+                        enabled: true
+                    };
                 });
             }
             if ("AilmentTarget" in every) {
@@ -529,7 +537,11 @@ class Item {
             }
             if ("StatusAilment" in every) {
                 every.StatusAilment.forEach((data) => {
-                    this.inattack_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                    this.inattack_ailment_params[data.Name] = {
+                        action: data.Action,
+                        probability: data.Probability,
+                        enabled: true
+                    };
                 });
             }
             if ("AilmentTarget" in every) {
@@ -561,7 +573,11 @@ class Item {
             }
             if ("StatusAilment" in every) {
                 every.StatusAilment.forEach((data) => {
-                    this.inbeattack_ailment_params[data.Name] = {action: data.Action, probability: data.Probability, enabled: true};
+                    this.inbeattack_ailment_params[data.Name] = {
+                        action: data.Action,
+                        probability: data.Probability,
+                        enabled: true
+                    };
                 });
             }
             if ("AilmentTarget" in every) {
@@ -620,7 +636,9 @@ new Vue({
         export_dialog: false,
         csv_data: "",
         card_height: 0,
+        card_height_backup: 0,
         scroll_top: 0,
+        scroll_top_backup: 0,
         start_index: 0,
 
         item_attribute: ['None', 'Void', 'Earth', 'Water', 'Lightning', 'Wind', 'Ice', 'Flame'],
@@ -657,20 +675,30 @@ new Vue({
             }
             this.items.push(new_item);
             this.items.sort(this.itemCompare);
-            console.log(this.items.length);
             this.recomputeDisplayCards();
         }
         ,
         removeItem: function (item_id) {
-            this.items = this.items.filter((item) => {return item.id !== item_id});
+            this.items = this.items.filter((item) => {
+                return item.id !== item_id
+            });
             this.recomputeDisplayCards();
         },
-        toEditItem: function (index) {
-            this.item = this.items[index];
+        toEditItem: function (item) {
+            this.scroll_top_backup = this.scroll_top;
+            this.card_height_backup = this.card_height;
             this.mode = "edit";
+            this.item = item;
         },
         toList: function () {
             this.mode = "list";
+            this.list = document.getElementById('item-list');
+            this.start_index = parseInt(this.scroll_top_backup / this.card_height_backup, 10);
+            this.display_items = this.items.slice(this.start_index, this.start_index + this.calcElementNum());
+            this.scroll_top = this.scroll_top_backup;
+            Vue.nextTick(() => {
+                scrollTo(0, this.scroll_top_backup);
+            });
         },
         generateCSV: function () {
             let rows = [];
@@ -724,30 +752,27 @@ new Vue({
             this.recomputeDisplayCards();
         },
         handleResize: function () {
-            console.log(this.calcElementNum());
             this.recomputeDisplayCards();
         },
         recomputeDisplayCards: function () {
             this.card_height = this.getElementHeight();
-            this.display_items = this.items.slice(this.start_index, this.start_index+this.calcElementNum());
-            console.log(this.card_height);
+            this.display_items = this.items.slice(this.start_index, this.start_index + this.calcElementNum());
         },
         getElementHeight: function () {
-            if (this.$refs.element === undefined) {
+            let element = document.getElementById('element');
+            if (element === undefined) {
                 return 1;
             } else {
-                return this.$refs.element[0].clientHeight;
+                    return element.clientHeight;
             }
         },
         calcElementNum: function () {
-            return Math.ceil((window.innerHeight-64) / this.card_height)+2;
+            return Math.ceil((window.innerHeight - 64) / this.card_height) + 2;
         },
         updateScrollParam: function (e) {
             this.scroll_top = e.target.scrollingElement.scrollTop;
-            this.start_index = parseInt(this.scroll_top/this.card_height, 10);
-            console.log(this.start_index);
-            this.display_items = this.items.slice(this.start_index, this.start_index+this.calcElementNum());
-            this.recomputeDisplayCards();
+            this.start_index = parseInt(this.scroll_top / this.card_height, 10);
+            this.display_items = this.items.slice(this.start_index, this.start_index + this.calcElementNum());
         }
     },
     computed: {
@@ -759,8 +784,9 @@ new Vue({
             top_offset -= (this.scroll_top % this.card_height);
             return {
                 "overflow": "auto",
+                "height": "100%",
                 "padding-top": top_offset + 'px',
-                'padding-bottom': (this.card_height * (this.items.length - this.calcElementNum()))-top_offset+50 + 'px'
+                'padding-bottom': (this.card_height * (this.items.length - this.calcElementNum())) - top_offset + 'px'
             }
         }
     }
