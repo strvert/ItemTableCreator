@@ -287,7 +287,7 @@
                                                 <v-checkbox
                                                         v-model="item.everyturn_inbattle_params[name].enabled"></v-checkbox>
                                                 <v-text-field :disabled="!item.everyturn_inbattle_params[name].enabled"
-                                                              !label="item.absolute_param_category_labels[index]" type="number"
+                                                              :label="item.absolute_param_category_labels[index]" type="number"
                                                               v-model.number="item.everyturn_inbattle_params[name].value"></v-text-field>
                                             </v-layout>
                                             <v-flex xs12 sm12 md12>
