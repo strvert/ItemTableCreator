@@ -199,7 +199,7 @@ class Item {
 
             if (this.checkUsing(this.normal_ailment_params)) {
                 this.AddElement(e, "NormalUse.InBattle.StatusAilment", params);
-                this.AddElement(e, "NormalUse.InBattle.Target", this.normal_inbattle_target);
+                this.AddElement(e, "NormalUse.InBattle.StatusAilmentTarget", this.normal_inbattle_target);
             }
 
             if (this.normal_inbattle_customevent.enabled) {
@@ -442,8 +442,8 @@ class Item {
                         };
                     });
                 }
-                if ("Target" in inbattle) {
-                    this.normal_inbattle_target = inbattle.Target;
+                if ("StatusAilmentTarget" in inbattle) {
+                    this.normal_inbattle_target = inbattle.StatusAilmentTarget;
                 }
                 if ("CustomEvent" in inbattle) {
                     this.normal_inbattle_customevent = {value: inbattle.CustomEvent, enabled: true};
